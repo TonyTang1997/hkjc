@@ -12,11 +12,18 @@ import selenium
 from selenium import webdriver
 import pandas as pd
 from selenium.webdriver.chrome.options import Options
+from datetime import datetime 
+
+today = datetime.now()
 
 home_dir = os.path.expanduser('~')
 matchdays_dir = home_dir + "/matchdays.csv"
 matchdays = pd.read_csv(matchdays_dir)
 matchdays = matchdays.sort_values("date")
+
+matchdays['date'] = pd.to_datetime(matchdays['date'], format='%Y/%m/%d')
+matchdays = matchdays[matchdays.date < today].reset_index(drop=True)
+matchdays['date'] = matchdays['date'].dt.strftime('%Y/%m/%d')
 
 date_to_crawl = matchdays['date']
 venue_to_crawl = matchdays['venue']
