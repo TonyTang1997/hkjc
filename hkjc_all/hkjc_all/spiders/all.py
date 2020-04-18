@@ -29,8 +29,7 @@ class hkRaceAllSpider(scrapy.Spider):
     start_urls = [] 
     for i in range(len(matchdays)):
         for j in range(race_to_crawl[i]):
-            tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx?RaceDate={}&Racecourse={}&RaceNo={}"\
-            .format(date_to_crawl[i],venue_to_crawl[i],race_to_crawl[i])
+            tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx?RaceDate={}&Racecourse={}&RaceNo={}".format(date_to_crawl[i],venue_to_crawl[i],j+1)
             start_urls.append(tmp_urls)
 
     print(len(start_urls))
