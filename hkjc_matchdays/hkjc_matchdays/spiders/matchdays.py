@@ -13,7 +13,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 class MatchDaySpider(scrapy.Spider):
-    name = "matchday"
+    name = "matchdays"
 
     start_urls = [] #"https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear=1979&CalMonth=11"
     for i in range(1979,2021):
@@ -28,7 +28,7 @@ class MatchDaySpider(scrapy.Spider):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        self.browser = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver",chrome_options=chrome_options)
+        self.browser = webdriver.Chrome("/usr/bin/chromedriver",chrome_options=chrome_options)
 
     def parse(self, response):
 
