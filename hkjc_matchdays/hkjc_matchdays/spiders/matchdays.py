@@ -15,11 +15,11 @@ from selenium.webdriver.chrome.options import Options
 class MatchDaySpider(scrapy.Spider):
     name = "matchdays"
 
-    start_urls = ["https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear=1979&CalMonth=10"] 
-    #for i in range(1979,2021):
-    #    for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
-    #        tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear={}&CalMonth={}".format(i,j)
-    #        start_urls.append(tmp_urls)
+    start_urls = [] 
+    for i in range(1979,2021):
+        for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
+            tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear={}&CalMonth={}".format(i,j)
+            start_urls.append(tmp_urls)
 
     basedict = {'date':'','venue':'','n_race':''}
 

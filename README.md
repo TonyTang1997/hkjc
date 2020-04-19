@@ -1,7 +1,7 @@
 ```
 sudo apt-get update
 
-sudo apt-get install unzip python3-pip
+sudo apt-get -y install unzip python3-pip
 
 pip3 install --upgrade setuptools
 pip3 install --upgrade pip
@@ -15,7 +15,7 @@ wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.de
 
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
-sudo apt-get install -f
+sudo apt-get -y install -f
 
 wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip
 
