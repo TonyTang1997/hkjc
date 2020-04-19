@@ -15,13 +15,13 @@ from selenium.webdriver.chrome.options import Options
 class MatchDaySpider(scrapy.Spider):
     name = "matchdays"
 
-    start_urls = [] #"https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear=1979&CalMonth=11"
-    for i in range(1979,2021):
-        for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
-            tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear={}&CalMonth={}".format(i,j)
-            start_urls.append(tmp_urls)
+    start_urls = ["https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear=1979&CalMonth=10"] 
+    #for i in range(1979,2021):
+    #    for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
+    #        tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx?CalYear={}&CalMonth={}".format(i,j)
+    #        start_urls.append(tmp_urls)
 
-    basedict = {'date':'','veune':'','n_race':''}
+    basedict = {'date':'','venue':'','n_race':''}
 
     def __init__(self):
         chrome_options = Options()
@@ -43,11 +43,14 @@ class MatchDaySpider(scrapy.Spider):
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
         race_days = soup.find_all('td', class_='calendar')
-        
+
+
+        #input()	
         for i in race_days:
             race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
             main['date'] = year+'/'+month+'/'+race_day
             main['venue'] = i.findAll('img')[0]['alt']
-            main['n_race'] = len(i.findAll('img')) - 3        
+            main['n_race'] = len(i.findAll('p')) - 1    
+
             yield main
 

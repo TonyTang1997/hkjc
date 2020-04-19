@@ -6,6 +6,8 @@ sudo apt-get install unzip python3-pip
 pip3 install --upgrade setuptools
 pip3 install --upgrade pip
 
+pip install --upgrade pyasn1-modules
+
 git config --global credential.helper store
 git config --global user.name "TonyTang1997"
 
@@ -15,7 +17,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 sudo apt-get install -f
 
-wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+wget https://chromedriver.storage.googleapis.com/index.html?path=83.0.4103.14/
 
 unzip chromedriver_linux64.zip
 
