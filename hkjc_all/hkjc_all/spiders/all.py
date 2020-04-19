@@ -17,7 +17,7 @@ from datetime import datetime
 today = datetime.now()
 
 home_dir = os.path.expanduser('~')
-matchdays_dir = home_dir + "/matchdays.csv"
+matchdays_dir = home_dir + "/hkjc/matchdays.csv"
 matchdays = pd.read_csv(matchdays_dir)
 matchdays = matchdays.sort_values("date")
 
@@ -36,7 +36,7 @@ class hkRaceAllSpider(scrapy.Spider):
     start_urls = [] 
     for i in range(len(matchdays)):
         for j in range(race_to_crawl[i]):
-            tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx?RaceDate={}&Racecourse={}&RaceNo={}".format(date_to_crawl[i],venue_to_crawl[i],j+1)
+            tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx/?RaceDate={}&Racecourse={}&RaceNo={}".format(date_to_crawl[i],venue_to_crawl[i],j+1)
             start_urls.append(tmp_urls)
 
     print(len(start_urls))
@@ -44,7 +44,7 @@ class hkRaceAllSpider(scrapy.Spider):
     all_headers = ['Date', 'Location','Race', 'Place', 'Number', 'Horse', 'Horse Code', 'Jockey', 'Trainer', 'Actual Wt.', 'Declar.Horse Wt.', 'Draw', 'LBW', 'Time',
     'Win Odds','Running Pos 1', 'Running Pos 2', 'Running Pos 3', 'Running Pos 4', 'Running Pos 5', 'Running Pos 6', 'Race Code', 'Class', 'Distance', 'Handicap',
     'Prize Money(HKD)', 'Condition', 'Ground', 'Course', 'Race Time 1', 'Race Time 2', 'Race Time 3', 'Race Time 4', 'Race Time 5', 'Race Time 6', 'Sectional Time 1',
-    'Sectional Time 2', 'Sectional Time 3', 'Sectional Time 4', 'Sectional Time 5', 'Sectional Time 6', 'URL']
+    'Sectional Time 2', 'Sectional Time 3', 'Sectional Time 4', 'Sectional Time 5', 'Sectional Time 6','WIN(Dividend)','PLACE(Dividend)','QUINELLA','QP1(Dividend)','QP1(Winning Combination)','QP2(Dividend)','QP2(Winning Combination)','QP3(Dividend)','QP3(Winning Combination)','TIERCE','TRIO','FIRST 4','QUARTET', 'URL']
 
     #not sure need to scrape or not
     #,'WIN(Dividend)','PLACE(Dividend)','QUINELLA','QP1(Dividend)','QP1(Winning Combination)','QP2(Dividend)','QP2(Winning Combination)','QP3(Dividend)','QP3(Winning Combination)','TIERCE','TRIO','FIRST 4','QUARTET'
@@ -143,39 +143,41 @@ class hkRaceAllSpider(scrapy.Spider):
             main['Distance'] = rawClassDistance[1][1:-2]
             
         #get WIN PLACE QUINELLA TIERCE TRIO FRIST 4 QUARTET
-        #main['QUINELLA'] = soup.find("td", text="QUINELLA").findNext('td').findNext('td').get_text()
-        #QP = soup.find("td", text="QUINELLA PLACE")
-        #if QP is not None:
-        #    QP1 = QP.findNext('td')
-        #    QP2 = QP.findNext('tr').findNext('td')
-        #    QP3 = QP.findNext('tr').findNext('tr').findNext('td')
-        #    if main['QUINELLA'] != 'REFUND':
-        #        main['QP1(Dividend)'] = QP1.findNext('td').get_text()
-        #        main['QP2(Dividend)'] = QP2.findNext('td').get_text()
-        #        main['QP3(Dividend)'] = QP3.findNext('td').get_text()
-        #        main['QP1(Winning Combination)'] = QP1.get_text()
-        #        main['QP2(Winning Combination)'] = QP2.get_text()
-        #        main['QP3(Winning Combination)'] = QP3.get_text() 
-        #    else:
-        #        main['QP1(Dividend)'] = 'REFUND'
-        #        main['QP2(Dividend)'] = 'REFUND'
-        #        main['QP3(Dividend)'] = 'REFUND'
-        #        main['QP1(Winning Combination)'] = 'REFUND'
-        #        main['QP2(Winning Combination)'] = 'REFUND'
-        #        main['QP3(Winning Combination)'] = 'REFUND'
+        QUINELLA = soup.find("td", text="QUINELLA")
+        if QUINELLA is not None:
+            main['QUINELLA'] = QUINELLA.findNext('td').findNext('td').get_text()
+        QP = soup.find("td", text="QUINELLA PLACE")
+        if QP is not None:
+            QP1 = QP.findNext('td')
+            QP2 = QP.findNext('tr').findNext('td')
+            QP3 = QP.findNext('tr').findNext('tr').findNext('td')
+            if main['QUINELLA'] != 'REFUND':
+                main['QP1(Dividend)'] = QP1.findNext('td').get_text()
+                main['QP2(Dividend)'] = QP2.findNext('td').get_text()
+                main['QP3(Dividend)'] = QP3.findNext('td').get_text()
+                main['QP1(Winning Combination)'] = QP1.get_text()
+                main['QP2(Winning Combination)'] = QP2.get_text()
+                main['QP3(Winning Combination)'] = QP3.get_text() 
+            else:
+                main['QP1(Dividend)'] = 'REFUND'
+                main['QP2(Dividend)'] = 'REFUND'
+                main['QP3(Dividend)'] = 'REFUND'
+                main['QP1(Winning Combination)'] = 'REFUND'
+                main['QP2(Winning Combination)'] = 'REFUND'
+                main['QP3(Winning Combination)'] = 'REFUND'
 
-        #TIERCE = soup.find("td", text="TIERCE")
-        #TRIO = soup.find("td", text="TRIO")
-        #FIRST4 = soup.find("td", text="FIRST 4")
-        #QUARTET = soup.find("td", text="QUARTET")
-        #if TIERCE is not None:
-        #    main['TIERCE'] = TIERCE.findNext('td').findNext('td').get_text()
-        #if TRIO is not None:
-        #    main['TRIO'] = TRIO.findNext('td').findNext('td').get_text()
-        #if FIRST4 is not None:
-        #    main['FIRST 4'] = FIRST4.findNext('td').findNext('td').get_text()
-        #if QUARTET is not None:
-        #    main['QUARTET'] = QUARTET.findNext('td').findNext('td').get_text()
+        TIERCE = soup.find("td", text="TIERCE")
+        TRIO = soup.find("td", text="TRIO")
+        FIRST4 = soup.find("td", text="FIRST 4")
+        QUARTET = soup.find("td", text="QUARTET")
+        if TIERCE is not None:
+            main['TIERCE'] = TIERCE.findNext('td').findNext('td').get_text()
+        if TRIO is not None:
+            main['TRIO'] = TRIO.findNext('td').findNext('td').get_text()
+        if FIRST4 is not None:
+            main['FIRST 4'] = FIRST4.findNext('td').findNext('td').get_text()
+        if QUARTET is not None:
+            main['QUARTET'] = QUARTET.findNext('td').findNext('td').get_text()
 
         #get rows of the perfermance table
         table = soup.find('tbody', {'class': 'f_fs12'})
@@ -183,14 +185,17 @@ class hkRaceAllSpider(scrapy.Spider):
             return
         trs = table.findChildren('tr')
 
-        #placeDividend = []
-        #startTr = soup.find("td", text="PLACE").find_parent('tr')
-        #placeDividend.append(startTr.findNext('td').findNext('td').findNext('td').get_text())
-        #while True:
-        #    startTr = startTr.findNext('tr')
-        #    if len(startTr) == 7:
-        #        break
-        #    placeDividend.append(startTr.findNext('td').findNext('td').get_text())
+        PLACE = soup.find("td", text="PLACE")
+        
+        if PLACE is not None:
+            placeDividend = []
+            startTr = PLACE.find_parent('tr')
+            placeDividend.append(startTr.findNext('td').findNext('td').findNext('td').get_text())
+            while True:
+                startTr = startTr.findNext('tr')
+                if len(startTr) == 7:
+                    break
+            placeDividend.append(startTr.findNext('td').findNext('td').get_text())
 
         trsIndex = 0
 
@@ -239,21 +244,24 @@ class hkRaceAllSpider(scrapy.Spider):
                     final['Running Pos '+str(i+1)] = runningPosList[i]
             
             #input WIN(Dividend) and PLACE(Dividend)
-            #if trsIndex == 0:
-            #    final['WIN(Dividend)'] = soup.find("td", text="WIN").findNext('td').findNext('td').get_text()
-            #    final['PLACE(Dividend)'] = placeDividend[0]
-            #if trsIndex == 1 and final['Place'] == '1DH':
-            #    final['WIN(Dividend)'] = soup.find("td", text="WIN").findNext('tr').findNext('td').findNext('td').get_text()
-            #if trsIndex == 1:            
-            #    try:
-            #        final['PLACE(Dividend)'] = placeDividend[1]
-            #    except IndexError:
-            #        pass
-            #if trsIndex == 2:
-            #    try:
-            #        final['PLACE(Dividend)'] = placeDividend[2]
-            #    except IndexError:
-            #        pass
+            WIN = soup.find("td", text="WIN")
+            
+            if WIN is not None:
+                if trsIndex == 0:
+                    final['WIN(Dividend)'] = WIN.findNext('td').findNext('td').get_text()
+                    final['PLACE(Dividend)'] = placeDividend[0]
+                if trsIndex == 1 and final['Place'] == '1DH':
+                    final['WIN(Dividend)'] = WIN.findNext('tr').findNext('td').findNext('td').get_text()
+                if trsIndex == 1:            
+                    try:
+                        final['PLACE(Dividend)'] = placeDividend[1]
+                    except IndexError:
+                        pass
+                if trsIndex == 2:
+                    try:
+                        final['PLACE(Dividend)'] = placeDividend[2]
+                    except IndexError:
+                        pass
                 
             trsIndex += 1
 
