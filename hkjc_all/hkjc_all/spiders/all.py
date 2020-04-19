@@ -53,7 +53,7 @@ class hkRaceAllSpider(scrapy.Spider):
 
     baseDict = dict(zip(all_headers,zeroList))
 
-    current = 0
+    current = 1
 
     def __init__(self):
         chrome_options = Options()
@@ -66,7 +66,7 @@ class hkRaceAllSpider(scrapy.Spider):
         
         print("{} of {}. {}".format(self.current, len(self.start_urls), response.request.url))
 
-        self.current+= 1
+        self.current += 1
 
         main = self.baseDict.copy()
 
