@@ -3,10 +3,7 @@ sudo apt-get update
 
 sudo apt-get -y install unzip python3-pip
 
-pip3 install --upgrade setuptools
-pip3 install --upgrade pip
-
-pip install --upgrade pyasn1-modules
+pip3 install --upgrade setuptools pip pyasn1-modules
 
 git config --global credential.helper store
 git config --global user.name "TonyTang1997"
