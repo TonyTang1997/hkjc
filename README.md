@@ -7,7 +7,7 @@ pip3 install --upgrade setuptools
 pip3 install --upgrade pip
 
 git config --global credential.helper store
-git config --global user.name
+git config --global user.name "TonyTang1997"
 
 wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
