@@ -2,3 +2,4 @@ bs4==0.0.1
 Scrapy==2.0.1
 selenium==3.141.0
 pandas
+pymongo
