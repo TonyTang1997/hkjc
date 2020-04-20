@@ -24,7 +24,7 @@ class RaceDaySpider(scrapy.Spider):
             start_urls.append(tmp_urls)
 
     custom_settings = {
-        'SOMEPIPELINE_ENABLED': False
+        'MONGODBPIPELINE_ENABLED': False
     }
 
     def __init__(self):
