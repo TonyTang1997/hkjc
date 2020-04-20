@@ -8,15 +8,23 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "hkjc"
+MONGODB_COLLECTION = "hkrace"
+
+ITEM_PIPELINES = {
+   'hkjc_all.pipelines.MongoDBPipeline': 400,
+}
+MONGODBPIPELINE_ENABLED = True 
 
 BOT_NAME = 'hkjc_all'
 
 SPIDER_MODULES = ['hkjc_all.spiders']
 NEWSPIDER_MODULE = 'hkjc_all.spiders'
 
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'hkjc_all (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -26,13 +34,22 @@ CONCURRENT_REQUESTS = 32
 
 LOG_ENABLED = False
 
-USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 0.1
 
 RANDOMIZE_DOWNLOAD_DELAY = False
+
+FEED_EXPORT_ENCODING = 'utf-8'
+
+FEED_EXPORTERS = {
+    'csv': 'hkjc_all.exporters.FixLineCsvItemExporter',
+}
+
+CSV_DELIMITER = ';'
+
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16

@@ -1,14 +1,67 @@
-# -*- coding: utf-8 -*-
-
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
-
+from scrapy.item import Item, Field
 
 class HkjcAllItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+
+    race_date = Field()
+    venue = Field()
+    race_no = Field()
+    result = Field()
+    horse_number = Field()
+    horse_name = Field()
+    horse_id = Field()
+    jockey = Field()
+    trainer = Field()
+    actual_weight = Field()
+    declared_weight = Field()
+    draw = Field()
+    LBW = Field()
+    finish_time = Field()
+    win_odds = Field()
+    running_pos_1 = Field()
+    running_pos_2 = Field()
+    running_pos_3 = Field()
+    running_pos_4 = Field()
+    running_pos_5 = Field()
+    running_pos_6 = Field()
+    race_code = Field()
+    race_class = Field()
+    distance = Field()
+    handicap = Field()
+    prize_money = Field()
+    condition = Field()
+    track = Field()
+    config = Field()
+    race_time_1 = Field()
+    race_time_2 = Field()
+    race_time_3 = Field()
+    race_time_4 = Field()
+    race_time_5 = Field()
+    race_time_6 = Field()
+    sectional_time_1 = Field()
+    sectional_time_2 = Field()
+    sectional_time_3 = Field()
+    sectional_time_4 = Field()
+    sectional_time_5 = Field()
+    sectional_time_6 = Field()
+    win_dividend = Field()
+    place_dividend = Field()
+    quinella = Field()
+    qp1_dividend = Field()
+    qp1_win_com = Field()
+    qp2_dividend = Field()
+    qp2_win_com = Field()
+    qp3_dividend = Field()
+    qp3_win_com = Field()
+    tierce = Field()
+    trio = Field()
+    first_4 = Field()
+    quartet = Field()
+    url = Field()
+
+
+class HkjcRaceDayItem(scrapy.Item):
+
+    date = Field()
+    venue = Field()
+    n_race = Field()
