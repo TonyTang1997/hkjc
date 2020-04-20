@@ -8,10 +8,8 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGODB_DB = "hkjc"
-MONGODB_COLLECTION = "hkrace"
+MONGO_URI = 'mongodb://localhost:27017/'
+MONGO_DATABASE = 'hkjc'
 
 ITEM_PIPELINES = {
    'hkjc_all.pipelines.MongoDBPipeline': 400,
