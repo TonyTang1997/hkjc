@@ -66,11 +66,6 @@ class hkRaceAllSpider(scrapy.Spider):
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
 
-        #checkblank = soup.find("div", {"id": "errorContainer"})
-        #if checkblank is not None:
-        #    print("Blank")
-        #    return
-
         main['url'] = str(response.request.url)
 
         raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')        
@@ -112,7 +107,7 @@ class hkRaceAllSpider(scrapy.Spider):
         main['handicap'] = raceInfoRow2[1]
 
         if soup.find("td", text="Course :") is not None:
-            if soup.find("td", text="Course :").findNext('td').get_text() in ['TURF','ALL WEATHER TRACK','SAND','GRASS']:
+            if soup.find("td", text="Course :").findNext('td').get_text() in ['TURF','ALL WEATHER TRACK','SAND','GRASS','EQUITRACK']:
                 main['track'] = soup.find("td", text="Course :").findNext('td').get_text()
                 main['config'] = soup.find("td", text="Course :").findNext('td').get_text()
 
