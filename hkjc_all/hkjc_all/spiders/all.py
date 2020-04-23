@@ -60,8 +60,6 @@ class hkRaceAllSpider(scrapy.Spider):
         main = HkjcAllItem()
 
         self.browser.get(response.url)
-        
-        #self.crawler.engine.close_spider('log message')
 
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
@@ -70,13 +68,12 @@ class hkRaceAllSpider(scrapy.Spider):
 
         try:
             raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
-        except AttributeError:
+        except:
             print("retrying...")
             new_request = response.request.copy()
             new_request.dont_filter = True
             yield new_request
 
-        raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
         main["race_date"] = raceMeeting[1][1:]
         main["venue"] = raceMeeting[2]
 

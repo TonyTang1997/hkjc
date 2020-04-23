@@ -34,6 +34,8 @@ LOG_ENABLED = True
 
 LOG_LEVEL = 'ERROR'
 
+RETRY_ENABLED = True
+
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
