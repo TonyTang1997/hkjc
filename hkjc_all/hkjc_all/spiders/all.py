@@ -76,6 +76,7 @@ class hkRaceAllSpider(scrapy.Spider):
             new_request.dont_filter = True
             yield new_request
 
+        raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
         main["race_date"] = raceMeeting[1][1:]
         main["venue"] = raceMeeting[2]
 
