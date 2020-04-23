@@ -14,6 +14,7 @@ import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime 
 from hkjc_all.items import HkjcAllItem
+from scrapy import Request
 
 today = datetime.now()
 
@@ -68,11 +69,9 @@ class hkRaceAllSpider(scrapy.Spider):
 
         try:
             raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
-        except:
+        except AttributeError:
             print("retrying...")
-            new_request = response.request.copy()
-            new_request.dont_filter = True
-            yield new_request
+            yield Request(response.url, callback = self.parse, dont_filter = True)
 
         main["race_date"] = raceMeeting[1][1:]
         main["venue"] = raceMeeting[2]
