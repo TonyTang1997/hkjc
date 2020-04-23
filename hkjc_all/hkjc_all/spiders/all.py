@@ -68,15 +68,19 @@ class hkRaceAllSpider(scrapy.Spider):
 
         main['url'] = str(response.request.url)
 
-        raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')        
+        try:
+            raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
+        except AttributeError:
+            print("retrying...")
+            new_request = response.request.copy()
+            new_request.dont_filter = True
+            yield new_request
+
         main["race_date"] = raceMeeting[1][1:]
         main["venue"] = raceMeeting[2]
 
         #get Race Code 
         rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
-        
-        if rawRaceCode is None:
-            return
         
         raceCode = rawRaceCode.get_text().replace('\n','')
         main["race_code"] = raceCode
@@ -169,8 +173,7 @@ class hkRaceAllSpider(scrapy.Spider):
             return
         trs = table.findChildren('tr')
 
-        PLACE = soup.find("td", text="PLACE")
-        
+        PLACE = soup.find("td", text="PLACE")        
 
         if PLACE is not None:
             placeDividend = []
@@ -251,5 +254,3 @@ class hkRaceAllSpider(scrapy.Spider):
             trsIndex += 1
 
             yield final
-
-
