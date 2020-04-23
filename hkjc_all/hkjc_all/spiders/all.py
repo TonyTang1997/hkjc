@@ -44,7 +44,8 @@ class hkRaceAllSpider(scrapy.Spider):
     print(len(start_urls))
     
     current = 1
-
+    
+    retry_list = []
     def __init__(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
@@ -65,17 +66,18 @@ class hkRaceAllSpider(scrapy.Spider):
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
 
-        checkblank = soup.find("div", {"id": "errorContainer"})
-        if checkblank is not None:
-            print("Blank")
-            return
-
         main['url'] = str(response.request.url)
 
         try:
             raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
         except AttributeError:
-            print("retrying...")
+            self.retry_list.append(str(response.request.url))
+            print("retrying {} time".format(self.retry_list.count(str(response.request.url))))
+            if self.retry_list.count(str(response.request.url)) > 5:
+                print("excess retry limit")
+                main["race_date"]  = "blank"
+                main["venue"] = "blank"
+                yield main
             yield Request(response.url, callback = self.parse, dont_filter = True)
 
         main["race_date"] = raceMeeting[1][1:]
