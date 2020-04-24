@@ -77,7 +77,7 @@ class hkRaceAllSpider(scrapy.Spider):
                 print("excess retry limit")
                 main["race_date"]  = "blank"
                 main["venue"] = "blank"
-                yield main
+                return main
             yield Request(response.url, callback = self.parse, dont_filter = True)
 
         main["race_date"] = raceMeeting[1][1:]
@@ -242,7 +242,7 @@ class hkRaceAllSpider(scrapy.Spider):
                 if trsIndex == 0:
                     final['win_dividend'] = WIN.findNext('td').findNext('td').get_text()
                     final['place_dividend'] = placeDividend[0]
-                if trsIndex == 1 and final['result'] == '1DH':
+                if trsIndex == 1 and main['result'] == '1DH':
                     final['win_dividend'] = WIN.findNext('tr').findNext('td').findNext('td').get_text()
                 if trsIndex == 1:            
                     try:
