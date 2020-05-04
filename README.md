@@ -1,7 +1,7 @@
 ```
 sudo apt-get update
 
-sudo apt-get -y install unzip python3-pip
+sudo apt-get -y install unzip python3-pip mongodb
 
 pip3 install --upgrade setuptools pip pyasn1-modules
 
