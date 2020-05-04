@@ -35,7 +35,7 @@ class hkRaceAllSpider(scrapy.Spider):
 
     name = "all"
     
-    start_urls = ["https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx/?RaceDate=2020/04/19&Racecourse=ST&RaceNo=1"] 
+    start_urls = [] 
     for i in range(len(racedays)):
         for j in range(race_to_crawl[i]):
             tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx/?RaceDate={}&Racecourse={}&RaceNo={}".format(date_to_crawl[i],venue_to_crawl[i],j+1)
@@ -80,8 +80,20 @@ class hkRaceAllSpider(scrapy.Spider):
                 return main
             yield Request(response.url, callback = self.parse, dont_filter = True)
 
+        main = HkjcAllItem()
+
+        self.browser.get(response.url)
+
+        #get RaceMeeting info Date and Location
+        soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
+
+        main['url'] = str(response.request.url)
+
+        raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
+
         main["race_date"] = raceMeeting[1][1:]
         main["venue"] = raceMeeting[2]
+
 
         #get Race Code 
         rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
@@ -242,8 +254,8 @@ class hkRaceAllSpider(scrapy.Spider):
                 if trsIndex == 0:
                     final['win_dividend'] = WIN.findNext('td').findNext('td').get_text()
                     final['place_dividend'] = placeDividend[0]
-                if trsIndex == 1 and main['result'] == '1DH':
-                    final['win_dividend'] = WIN.findNext('tr').findNext('td').findNext('td').get_text()
+                #if trsIndex == 1 and main['result'] == '1DH':
+                #    final['win_dividend'] = WIN.findNext('tr').findNext('td').findNext('td').get_text()
                 if trsIndex == 1:            
                     try:
                         final['place_dividend'] = placeDividend[1]
