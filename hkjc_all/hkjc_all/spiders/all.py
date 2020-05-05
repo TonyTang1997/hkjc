@@ -245,7 +245,7 @@ class hkRaceAllSpider(scrapy.Spider):
                     
                 trsIndex += 1
 
-                yield final
+                return final
 
         print("{} of {}. {}".format(self.current, len(self.start_urls), response.request.url))
 
