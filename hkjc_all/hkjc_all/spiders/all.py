@@ -54,8 +54,12 @@ class hkRaceAllSpider(scrapy.Spider):
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options) #
 
     def parse(self, response):
+        
+        print("{} of {}. {}".format(self.current, len(self.start_urls), response.request.url))
 
-        def parse_logic(self, response):
+        self.current += 1
+
+        try:
             main = HkjcAllItem()
 
             self.browser.get(response.url)
@@ -245,18 +249,14 @@ class hkRaceAllSpider(scrapy.Spider):
                     
                 trsIndex += 1
 
-                return final
+                yield final
 
-        print("{} of {}. {}".format(self.current, len(self.start_urls), response.request.url))
-
-        self.current += 1
-
-        try:
-            parse_logic(self,response)
         except AttributeError:
             self.retry_list.append(str(response.request.url))
-            print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)),str(response.request.url)))
-            if self.retry_list.count(str(response.request.url)) > 3:
+            print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
+            if self.retry_list.count(str(response.request.url)) > 5:
                 print("excess retry limit")
-                return
+                main["race_date"]  = "blank"
+                main["venue"] = "blank"
+                return main
             yield Request(response.url, callback = self.parse, dont_filter = True)
