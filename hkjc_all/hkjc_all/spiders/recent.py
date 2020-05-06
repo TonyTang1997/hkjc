@@ -12,11 +12,11 @@ import selenium
 from selenium import webdriver
 import pandas as pd
 from selenium.webdriver.chrome.options import Options
-from datetime import datetime 
+from datetime import datetime, timedelta
 from hkjc_all.items import HkjcAllItem
 from scrapy import Request
 
-today = datetime.now()
+yesterday = (datetime.now() - timedelta(1))
 
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
@@ -24,7 +24,7 @@ racedays = pd.read_csv(racedays_dir)
 racedays = racedays.sort_values("date")
 
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
-racedays = racedays[racedays.date == today].reset_index(drop=True)
+racedays = racedays[racedays.date == yesterday].reset_index(drop=True)
 racedays['date'] = racedays['date'].dt.strftime('%Y/%m/%d')
 
 date_to_crawl = racedays['date']
