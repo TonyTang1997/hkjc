@@ -59,9 +59,31 @@ class HkjcAllItem(scrapy.Item):
     quartet = Field()
     url = Field()
 
-
 class HkjcRaceDayItem(scrapy.Item):
 
     date = Field()
     venue = Field()
     n_race = Field()
+
+class HkjcNewRaceItem(scrapy.Item):
+
+    race_date = Field()
+    venue = Field()
+    race_no = Field()
+    horse_number = Field()
+    horse_name = Field()
+    horse_id = Field()
+    jockey = Field()
+    trainer = Field()
+    actual_weight = Field()
+    declared_weight = Field()
+    draw = Field()
+    race_code = Field()
+    race_class = Field()
+    distance = Field()
+    handicap = Field()
+    prize_money = Field()
+    condition = Field()
+    track = Field()
+    config = Field()
+    url = Field()
