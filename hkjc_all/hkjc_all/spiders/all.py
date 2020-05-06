@@ -254,9 +254,9 @@ class hkRaceAllSpider(scrapy.Spider):
         except AttributeError:
             self.retry_list.append(str(response.request.url))
             print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
-            if self.retry_list.count(str(response.request.url)) > 5:
+            if self.retry_list.count(str(response.request.url)) > 3:
                 print("excess retry limit")
                 main["race_date"]  = "blank"
                 main["venue"] = "blank"
-                return main
+                yield main
             yield Request(response.url, callback = self.parse, dont_filter = True)
