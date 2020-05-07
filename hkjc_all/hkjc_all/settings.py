@@ -11,10 +11,10 @@
 MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DATABASE = 'hkjc'
 
-ITEM_PIPELINES = {
-   'hkjc_all.pipelines.MongoDBPipeline': 400,
-}
-MONGODBPIPELINE_ENABLED = True 
+#ITEM_PIPELINES = {
+#   'hkjc_all.pipelines.MongoDBPipeline': 400,
+#}
+#MONGODBPIPELINE_ENABLED = True 
 
 BOT_NAME = 'hkjc_all'
 

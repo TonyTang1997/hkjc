@@ -35,6 +35,12 @@ class hkRaceAllSpider(scrapy.Spider):
 
     name = "recent"
     
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'pipelines.MongoDBHKRacePipeline': 400
+        }
+    }
+
     start_urls = [] 
     for i in range(len(racedays)):
         for j in range(race_to_crawl[i]):

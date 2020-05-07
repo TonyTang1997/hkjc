@@ -14,18 +14,21 @@ from selenium.webdriver.chrome.options import Options
 from hkjc_all.items import HkjcRaceDayItem
 
 
-class RaceDaySpider(scrapy.Spider):
+class RaceDaySpider(scrapy.Spider):\
+
     name = "racedays"
 
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'pipelines.HkjcAllPipeline': 400
+        }
+    }
+    
     start_urls = [] 
     for i in range(1979,2021):
         for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
             tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx/?CalYear={}&CalMonth={}".format(i,j) #"/" before aspx is important to escape challenge
             start_urls.append(tmp_urls)
-
-    custom_settings = {
-        'MONGODBPIPELINE_ENABLED': False
-    }
 
     def __init__(self):
         chrome_options = Options()

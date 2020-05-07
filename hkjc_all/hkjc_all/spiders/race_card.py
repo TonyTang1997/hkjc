@@ -31,9 +31,16 @@ date_to_crawl = racedays['date']
 venue_to_crawl = racedays['venue']
 race_to_crawl = racedays['n_race']
 
-class NewRaceSpider(scrapy.Spider):
-    name = "new_race"
+class RaceCardSpider(scrapy.Spider):
+
+    name = "race_card"
     
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'pipelines.MongoDBRaceCardPipeline': 400
+        }
+    }
+
     start_urls = [] 
     for i in range(len(racedays)):
         for j in range(race_to_crawl[i]):

@@ -35,6 +35,12 @@ class hkRaceAllSpider(scrapy.Spider):
 
     name = "all"
     
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'pipelines.MongoDBHKRacePipeline': 400
+        }
+    }
+
     start_urls = [] 
     for i in range(len(racedays)):
         for j in range(race_to_crawl[i]):
@@ -46,6 +52,7 @@ class hkRaceAllSpider(scrapy.Spider):
     current = 1
     
     retry_list = []
+
     def __init__(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
