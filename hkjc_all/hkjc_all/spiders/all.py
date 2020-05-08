@@ -89,12 +89,12 @@ class hkRaceAllSpider(scrapy.Spider):
 
             #get Race Code 
             rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
-            
-            raceCode = rawRaceCode.get_text().replace('\n','')
 
-            if raceCode is None:
+            if rawRaceCode is None:
                 print("url {} is empty".format((str(response.request.url))))
                 return
+            
+            raceCode = rawRaceCode.get_text().replace('\n','')
 
             main["race_code"] = raceCode
             main["race_no"] = raceCode.split(' ')[1]
