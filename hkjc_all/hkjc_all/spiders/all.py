@@ -73,6 +73,11 @@ class hkRaceAllSpider(scrapy.Spider):
 
             #get RaceMeeting info Date and Location
             soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
+            
+            error_check = soup.find('div', {'id': 'errorContainer'})
+            if error_check is not None:
+                print("url {} is empty".format((str(response.request.url))))
+                return
 
             main['url'] = str(response.request.url)
 
