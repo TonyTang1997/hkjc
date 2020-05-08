@@ -30,6 +30,10 @@ class RaceDaySpider(scrapy.Spider):\
             tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx/?CalYear={}&CalMonth={}".format(i,j) #"/" before aspx is important to escape challenge
             start_urls.append(tmp_urls)
 
+    current = 1
+
+    retry_list = []
+
     def __init__(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
