@@ -73,6 +73,11 @@ class hkRaceAllSpider(scrapy.Spider):
             #get RaceMeeting info Date and Location
             soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
 
+            error_check = soup.find('div', {'id': 'errorContainer'})
+            if error_check is not None:
+                print("url {} is empty".format((str(response.request.url))))
+                return
+
             main['url'] = str(response.request.url)
 
             raceMeeting = soup.find('span', {'class': 'f_fl f_fs13'}).get_text().replace(u'\xa0', '').replace('  ',':').split(':')
@@ -80,10 +85,13 @@ class hkRaceAllSpider(scrapy.Spider):
             main["race_date"] = raceMeeting[1][1:]
             main["venue"] = raceMeeting[2]
 
-
             #get Race Code 
             rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
-            
+
+            if rawRaceCode is None:
+                print("url {} is empty".format((str(response.request.url))))
+                return
+
             raceCode = rawRaceCode.get_text().replace('\n','')
             main["race_code"] = raceCode
             main["race_no"] = raceCode.split(' ')[1]
@@ -262,7 +270,5 @@ class hkRaceAllSpider(scrapy.Spider):
             print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
             if self.retry_list.count(str(response.request.url)) > 3:
                 print("excess retry limit")
-                main["race_date"]  = "blank"
-                main["venue"] = "blank"
                 return main
             yield Request(response.url, callback = self.parse, dont_filter = True)

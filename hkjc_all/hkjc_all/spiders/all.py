@@ -86,7 +86,6 @@ class hkRaceAllSpider(scrapy.Spider):
             main["race_date"] = raceMeeting[1][1:]
             main["venue"] = raceMeeting[2]
 
-
             #get Race Code 
             rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
 
@@ -273,7 +272,5 @@ class hkRaceAllSpider(scrapy.Spider):
             print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
             if self.retry_list.count(str(response.request.url)) > 3:
                 print("excess retry limit")
-                main["race_date"]  = "blank"
-                main["venue"] = "blank"
                 return main
             yield Request(response.url, callback = self.parse, dont_filter = True)

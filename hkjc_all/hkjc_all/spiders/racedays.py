@@ -63,15 +63,7 @@ class RaceDaySpider(scrapy.Spider):\
             for i in race_days:
                 race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
                 main['date'] = year+'/'+month+'/'+race_day
-                main['venue'] = i.findAll('img')[0]['alt']
-                #n_race = 0
-                #races = i.findAll('span', class_='font_wb')
-
-                #for j in races:
-                #    n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
-
-                #main['n_race'] = min(n_race, 13)
-                
+                main['venue'] = i.findAll('img')[0]['alt']                
                 main['n_race'] = 14
                 
                 yield main
@@ -81,9 +73,6 @@ class RaceDaySpider(scrapy.Spider):\
             print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
             if self.retry_list.count(str(response.request.url)) > 3:
                 print("excess retry limit")
-                main["date"]  = "blank"
-                main["venue"] = "blank"
-                main["n_race"] = "blank"
                 yield main
                 
             yield Request(response.url, callback = self.parse, dont_filter = True)

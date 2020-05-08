@@ -88,7 +88,9 @@ class RaceCardSpider(scrapy.Spider):
         # get table info.
         table = soup.find('table', {'class': 'tableBorderBlue tdAlignC'}).findNext('tbody')
         if table is None:
+            print("url {} is empty".format((str(response.request.url))))
             return
+
         trs = table.findChildren('tr')
         for tr in trs[3:]:
             final = main.copy()
