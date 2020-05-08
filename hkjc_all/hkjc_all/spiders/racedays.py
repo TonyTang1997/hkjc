@@ -12,7 +12,7 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from hkjc_all.items import HkjcRaceDayItem
-
+import re
 
 class RaceDaySpider(scrapy.Spider):\
 
@@ -20,7 +20,7 @@ class RaceDaySpider(scrapy.Spider):\
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            'pipelines.HkjcAllPipeline': 400
+            'hkjc_all.pipelines.HkjcAllPipeline': 400
         }
     }
     
@@ -50,12 +50,18 @@ class RaceDaySpider(scrapy.Spider):\
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
         race_days = soup.find_all('td', class_='calendar')
-
+          
         for i in race_days:
             race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
             main['date'] = year+'/'+month+'/'+race_day
             main['venue'] = i.findAll('img')[0]['alt']
-            main['n_race'] = len(i.findAll('p')) - 1    
+            n_race = 0
+            races = i.findAll('span', class_='font_wb')
 
+            for j in races:
+                n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
+
+            main['n_race'] = n_race
+          
             yield main
 
