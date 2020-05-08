@@ -3,7 +3,7 @@ sudo apt-get update
 
 sudo apt-get -y install unzip python3-pip mongodb
 
-pip3 install --upgrade setuptools pip pyasn1-modules
+sudo pip3 install --upgrade setuptools pip pyasn1-modules apache-airflow
 
 git config --global credential.helper store
 git config --global user.name "TonyTang1997"
@@ -21,6 +21,8 @@ unzip chromedriver_linux64.zip
 sudo mv chromedriver /usr/bin/chromedriver
 sudo chown root:root /usr/bin/chromedriver
 sudo chmod +x /usr/bin/chromedriver
+
+git clone https://github.com/TonyTang1997/hkjc
 
 cd hkjc 
 pip3 install -r requirements.txt
