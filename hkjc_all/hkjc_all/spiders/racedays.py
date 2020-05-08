@@ -42,30 +42,46 @@ class RaceDaySpider(scrapy.Spider):\
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options) #
 
     def parse(self, response):
-
-        main = HkjcRaceDayItem()
-
-        self.browser.get(response.url)
         
-        url = str(response.request.url)
-        year = url.split("CalYear=")[1][:4]
-        month = url.split("CalMonth=")[1][:2]
+        print("{} of {}. {}".format(self.current, len(self.start_urls), response.request.url))
 
-        #get RaceMeeting info Date and Location
-        soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
-        race_days = soup.find_all('td', class_='calendar')
-          
-        for i in race_days:
-            race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
-            main['date'] = year+'/'+month+'/'+race_day
-            main['venue'] = i.findAll('img')[0]['alt']
-            n_race = 0
-            races = i.findAll('span', class_='font_wb')
+        self.current += 1
 
-            for j in races:
-                n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
+        try:
+            main = HkjcRaceDayItem()
 
-            main['n_race'] = n_race
-          
-            yield main
+            self.browser.get(response.url)
+            
+            url = str(response.request.url)
+            year = url.split("CalYear=")[1][:4]
+            month = url.split("CalMonth=")[1][:2]
 
+            #get RaceMeeting info Date and Location
+            soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
+            race_days = soup.find_all('td', class_='calendar')
+            
+            for i in race_days:
+                race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
+                main['date'] = year+'/'+month+'/'+race_day
+                main['venue'] = i.findAll('img')[0]['alt']
+                n_race = 0
+                races = i.findAll('span', class_='font_wb')
+
+                for j in races:
+                    n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
+
+                main['n_race'] = n_race
+            
+                yield main
+
+        except AttributeError:
+            self.retry_list.append(str(response.request.url))
+            print("retrying {} time on {}".format(self.retry_list.count(str(response.request.url)), (str(response.request.url))))
+            if self.retry_list.count(str(response.request.url)) > 3:
+                print("excess retry limit")
+                main["date"]  = "blank"
+                main["venue"] = "blank"
+                main["n_race"] = "blank"
+                yield main
+                
+            yield Request(response.url, callback = self.parse, dont_filter = True)
