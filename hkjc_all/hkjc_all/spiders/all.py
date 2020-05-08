@@ -91,6 +91,11 @@ class hkRaceAllSpider(scrapy.Spider):
             rawRaceCode = soup.find('tr', {'class': 'bg_blue color_w font_wb'})
             
             raceCode = rawRaceCode.get_text().replace('\n','')
+
+            if raceCode is None:
+                print("url {} is empty".format((str(response.request.url))))
+                return
+
             main["race_code"] = raceCode
             main["race_no"] = raceCode.split(' ')[1]
 
@@ -270,5 +275,5 @@ class hkRaceAllSpider(scrapy.Spider):
                 print("excess retry limit")
                 main["race_date"]  = "blank"
                 main["venue"] = "blank"
-                yield main
+                return main
             yield Request(response.url, callback = self.parse, dont_filter = True)

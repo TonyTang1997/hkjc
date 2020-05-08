@@ -264,5 +264,5 @@ class hkRaceAllSpider(scrapy.Spider):
                 print("excess retry limit")
                 main["race_date"]  = "blank"
                 main["venue"] = "blank"
-                yield main
+                return main
             yield Request(response.url, callback = self.parse, dont_filter = True)
