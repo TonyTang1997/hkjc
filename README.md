@@ -25,5 +25,5 @@ sudo chmod +x /usr/bin/chromedriver
 git clone https://github.com/TonyTang1997/hkjc
 
 cd hkjc 
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
