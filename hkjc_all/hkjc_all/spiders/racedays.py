@@ -70,7 +70,7 @@ class RaceDaySpider(scrapy.Spider):\
                 for j in races:
                     n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
 
-                main['n_race'] = n_race
+                main['n_race'] = min(n_race, 13)
             
                 yield main
 
