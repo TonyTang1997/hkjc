@@ -64,14 +64,16 @@ class RaceDaySpider(scrapy.Spider):\
                 race_day = i.find('span', class_='f_fl f_fs14').get_text().zfill(2)
                 main['date'] = year+'/'+month+'/'+race_day
                 main['venue'] = i.findAll('img')[0]['alt']
-                n_race = 0
-                races = i.findAll('span', class_='font_wb')
+                #n_race = 0
+                #races = i.findAll('span', class_='font_wb')
 
-                for j in races:
-                    n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
+                #for j in races:
+                #    n_race += int(re.search(r"\(([0-9])\)", j.get_text()).group(1))
 
-                main['n_race'] = min(n_race, 13)
-            
+                #main['n_race'] = min(n_race, 13)
+                
+                main['n_race'] = 14
+                
                 yield main
 
         except AttributeError:
