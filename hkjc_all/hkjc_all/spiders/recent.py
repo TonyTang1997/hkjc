@@ -37,7 +37,7 @@ class hkRaceAllSpider(scrapy.Spider):
     
     custom_settings = {
         'ITEM_PIPELINES': {
-            'pipelines.MongoDBHKRacePipeline': 400
+            'hkjc_all.pipelines.MongoDBHKRacePipeline': 400
         }
     }
 
