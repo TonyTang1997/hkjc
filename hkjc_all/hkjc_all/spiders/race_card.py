@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from hkjc_all.items import HkjcNewRaceItem
 from scrapy import Request
 
-day_before = (datetime.now() + timedelta(1))
+tomorrow = (datetime.now() + timedelta(1)).strftime('%Y/%m/%d')
 
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
@@ -24,8 +24,11 @@ racedays = pd.read_csv(racedays_dir)
 racedays = racedays.sort_values("date")
 
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
-racedays = racedays[racedays.date == day_before].reset_index(drop=True)
+racedays = racedays[racedays.date == tomorrow].reset_index(drop=True)
 racedays['date'] = racedays['date'].dt.strftime('%Y/%m/%d')
+
+print(tomorrow)
+print(racedays)
 
 date_to_crawl = racedays['date']
 venue_to_crawl = racedays['venue']
