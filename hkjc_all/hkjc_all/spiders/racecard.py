@@ -36,7 +36,7 @@ race_to_crawl = racedays['n_race']
 
 class RaceCardSpider(scrapy.Spider):
 
-    name = "race_card"
+    name = "racecard"
     
     custom_settings = {
         'ITEM_PIPELINES': {
@@ -45,10 +45,9 @@ class RaceCardSpider(scrapy.Spider):
     }
 
     start_urls = [] 
-    for i in range(len(racedays)):
-        for j in range(race_to_crawl[i]):
-            tmp_urls = "https://racing.hkjc.com/racing/information/English/racing/LocalResults.aspx/?RaceDate={}&Racecourse={}&RaceNo={}".format(date_to_crawl[i],venue_to_crawl[i],j+1)
-            start_urls.append(tmp_urls)
+    for j in range(14):
+        tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format(tomorrow.strftime('%Y%m%d'),venue_to_crawl[0],j+1)
+        start_urls.append(tmp_urls)
 
     def __init__(self):
         chrome_options = Options()
