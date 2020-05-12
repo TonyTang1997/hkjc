@@ -46,7 +46,7 @@ class RaceCardSpider(scrapy.Spider):
 
     start_urls = [] 
     for j in range(14):
-        tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format(tomorrow.strftime('%Y%m%d'),venue_to_crawl[0],j+1)
+        tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format((datetime.now() + timedelta(1)).strftime('%Y%m%d'),venue_to_crawl[0],j+1)
         start_urls.append(tmp_urls)
 
     def __init__(self):
