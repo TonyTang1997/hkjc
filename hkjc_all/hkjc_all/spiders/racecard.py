@@ -70,6 +70,11 @@ class RaceCardSpider(scrapy.Spider):
         #get RaceMeeting info Date and Location
         soup = bs.BeautifulSoup(self.browser.page_source, 'lxml')
 
+        table = soup.find('table', {'class': 'font13 lineH20 tdAlignL'})
+        if table is None:
+            print("url {} is empty".format((str(response.request.url))))
+            return
+
         main['venue'] = soup.find('table', {'class': 'font13 lineH20 tdAlignL'}).get_text().replace(u'\xa0', '').replace(' ','').replace('\r','').split('\n')[5].split(',')[3]
         raceMeeting = soup.find('table', {'class': 'font13 lineH20 tdAlignL'}).get_text().replace(u'\xa0', '').replace(' ','').replace('\r','').split('\n')[7]
 
