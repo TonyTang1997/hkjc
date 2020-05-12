@@ -40,7 +40,7 @@ class RaceCardSpider(scrapy.Spider):
     
     custom_settings = {
         'ITEM_PIPELINES': {
-            'hkjc_allpipelines.MongoDBRaceCardPipeline': 400
+            'hkjc_all.pipelines.MongoDBRaceCardPipeline': 400
         }
     }
 
