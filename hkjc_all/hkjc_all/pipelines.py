@@ -41,9 +41,9 @@ class MongoDBRaceCardPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        if not crawler.settings.getbool('MONGODBPIPELINE_ENABLED'):
+        #if not crawler.settings.getbool('MONGODBPIPELINE_ENABLED'):
             # if this isn't specified in settings, the pipeline will be completely disabled
-            raise NotConfigured
+            #raise NotConfigured
         return cls(mongo_uri=crawler.settings.get('MONGO_URI'),mongo_db=crawler.settings.get('MONGO_DATABASE', 'items'))
 
     def open_spider(self, spider):
