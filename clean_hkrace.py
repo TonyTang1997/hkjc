@@ -12,27 +12,29 @@ df['race_date'] = pd.to_datetime(df['race_date'], format='%d/%m/%Y')
 df = df.sort_values(['race_date','race_no']).reset_index(drop=True)
 df['global_race_id'] = df.race_date.astype(str)+' '+df.race_no.astype(str)
 
-df['result'] = df['result'].str.replace('99','DNF')
-df['result'] = df['result'].fillna("REFUND")
+df = df[df.result != '']
+df = df[df.finish_time != '---']
+
 df['result'] = df['result'].apply(lambda x: str(x).replace(' DH',''))
+df['result'] = df['result'].str.replace('99','DNF')
+df['result'] = df['result'].str.replace('nan','DNF')
+df['result'] = df['result'].fillna("REFUND")
 df['result'] = df['result'].apply(lambda x: str(x).replace('47','7'))
 
-special_incident_list = ['WV-A', 'PU', 'WV', 'WX', 'VOID', 'TNP', 'WX-A', 'FE', 'DISQ',
-       'UR', 'DNF', 'poor', 'WXNR', 'REFUND']
+special_incident_list = ['WV-A', 'PU', 'WV', 'WX', 'VOID', 'TNP', 'WX-A', 'FE', 'DISQ','UR', 'DNF', 'poor', 'WXNR', 'REFUND']
 df['special_incident'] = df['result'].apply(lambda x: x if x in special_incident_list else '0')
 
 df['result'] = pd.to_numeric(df['result'], errors='coerce')
 
-df = df.drop(df[(df['result'].isna()) & (df.special_incident == '0')].index)
+#df = df.drop(df[(df['result'].isna()) & (df.special_incident == '0')].index)
 
 df['season'] = df.race_date.apply(lambda x: get_season(x))
 
+df = df[df.finish_time.notnull()]
 df = df[df.venue != 'Conghua']
 venue_dict = {"Happy Valley":"HV","Sha Tin":"ST"}
 df['venue'] = df['venue'].map(venue_dict)
 
-df = df[df.finish_time != '---']
-df = df[df.finish_time.notnull()]
 
 df["finish_time"] = df["finish_time"].str.replace('.', ':')
 df['finish_time'] = df['finish_time'].str.split(':').apply(lambda x: int(x[0]) * 3600 + int(x[1]) * 60 + int(x[2]))
