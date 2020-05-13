@@ -31,8 +31,8 @@ df = df[df.venue != 'Conghua']
 venue_dict = {"Happy Valley":"HV","Sha Tin":"ST"}
 df['venue'] = df['venue'].map(venue_dict)
 
-df = df[df.Time != '---']
-df = df[pd.notnull(df['Time'])]
+df = df[df.finish_time != '---']
+df = df[df.finish_time.notnull()]
 
 df["finish_time"] = df["finish_time"].str.replace('.', ':')
 df['finish_time'] = df['finish_time'].str.split(':').apply(lambda x: int(x[0]) * 3600 + int(x[1]) * 60 + int(x[2]))
