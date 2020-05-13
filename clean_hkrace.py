@@ -27,8 +27,15 @@ df = df.drop(df[(df['result'].isna()) & (df.special_incident == '0')].index)
 
 df['season'] = df.race_date.apply(lambda x: get_season(x))
 
+df = df[df.venue != 'Conghua']
 venue_dict = {"Happy Valley":"HV","Sha Tin":"ST"}
 df['venue'] = df['venue'].map(venue_dict)
+
+df = df[df.Time != '---']
+df = df[pd.notnull(df['Time'])]
+
+df["finish_time"] = df["finish_time"].str.replace('.', ':')
+df['finish_time'] = df['finish_time'].str.split(':').apply(lambda x: int(x[0]) * 3600 + int(x[1]) * 60 + int(x[2]))
 
 df['race_no'] = df['race_no'].apply(lambda x:int(x))
 df['distance'] = df['distance'].apply(lambda x:int(x))
