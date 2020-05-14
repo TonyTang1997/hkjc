@@ -43,11 +43,12 @@ class RaceCardSpider(scrapy.Spider):
             'hkjc_all.pipelines.MongoDBRaceCardPipeline': 400
         }
     }
-
-    start_urls = [] 
-    for j in range(14):
-        tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format((datetime.now() + timedelta(1)).strftime('%Y%m%d'),venue_to_crawl[0],j+1)
-        start_urls.append(tmp_urls)
+    
+    if len(racedays) > 0:
+        start_urls = [] 
+        for j in range(14):
+            tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format((datetime.now() + timedelta(1)).strftime('%Y%m%d'),venue_to_crawl[0],j+1)
+            start_urls.append(tmp_urls)
 
     def __init__(self):
         chrome_options = Options()
