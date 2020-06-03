@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from hkjc_all.items import HkjcNewRaceItem
 from scrapy import Request
 
-tomorrow = (datetime.now() + timedelta(1)).strftime('%Y/%m/%d')
+today = (datetime.now()).strftime('%Y/%m/%d')
 
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
@@ -24,10 +24,10 @@ racedays = pd.read_csv(racedays_dir)
 racedays = racedays.sort_values("date")
 
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
-racedays = racedays[racedays.date == tomorrow].reset_index(drop=True)
+racedays = racedays[racedays.date == today].reset_index(drop=True)
 racedays['date'] = racedays['date'].dt.strftime('%Y/%m/%d')
 
-print(tomorrow)
+print(today)
 print(racedays)
 
 date_to_crawl = racedays['date']
@@ -47,7 +47,7 @@ class RaceCardSpider(scrapy.Spider):
     if len(racedays) > 0:
         start_urls = [] 
         for j in range(14):
-            tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format((datetime.now() + timedelta(1)).strftime('%Y%m%d'),venue_to_crawl[0],j+1)
+            tmp_urls = "https://racing.hkjc.com/racing/Info/Meeting/RaceCard/English/Local/{}/{}/{}".format((datetime.now()).strftime('%Y%m%d'),venue_to_crawl[0],j+1)
             start_urls.append(tmp_urls)
 
     def __init__(self):
