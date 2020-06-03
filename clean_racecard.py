@@ -39,6 +39,4 @@ combined_df = combined_df.sort_values(['race_date','race_no','finish_time','hors
 
 combined_df = combined_df[df.columns]
 
-combined_df
-
 combined_df.to_csv("hkrace_cleaned_racecard.csv", idnex=False)
