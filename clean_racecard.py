@@ -41,4 +41,4 @@ combined_df = combined_df[df.columns]
 
 combined_df
 
-combined_df.to_pickle("racecard.pkl")
+combined_df.to_csv("hkrace_cleaned_racecard.csv")
