@@ -7,7 +7,9 @@ def get_season(x):
     else:
         return x.year
 
-racecard = pd.read_json('race_card.json', lines=True)
+df = pd.read_csv('hkrace_cleaned.csv')
+
+racecard = pd.read_json('racecard.json', lines=True)
 
 racecard['race_date_dt'] = pd.to_datetime(racecard['race_date_dt'].astype(str), format='%Y%m%d')
 racecard['race_date_dt'] = racecard['race_date_dt'].apply(lambda x: str(x).split(" ")[0])
@@ -31,4 +33,12 @@ racecard['actual_weight'] = pd.to_numeric(racecard['actual_weight'], errors='coe
 
 racecard = racecard.reset_index(drop=True)
 
-racecard.to_pickle("racecard.pkl")
+combined_df = pd.concat([df,racecard])
+
+combined_df = combined_df.sort_values(['race_date_dt','race_no','finish_time','horse_number'],ascending=[True,True,True,True])
+
+combined_df = combined_df[df.columns]
+
+combined_df
+
+combined_df.to_pickle("racecard.pkl")
