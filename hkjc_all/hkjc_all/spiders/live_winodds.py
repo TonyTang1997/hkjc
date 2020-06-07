@@ -22,7 +22,7 @@ import random
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
 racedays = pd.read_csv(racedays_dir)
-racedays = racedays.sort_values("date")
+racedays = racedays.sort_values("date").reset_index(drop=True)
 
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date < datetime.now()].reset_index(drop=True)
