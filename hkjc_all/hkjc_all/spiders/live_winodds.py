@@ -27,11 +27,11 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date < datetime.now()].reset_index(drop=True)
 
-next_raceday = racedays['date'][len(race_before_today) + 1]
-next_race_venue = racedays['venue'][len(race_before_today) + 1]
+next_raceday = racedays['date'][len(race_before_today)]
+next_race_venue = racedays['venue'][len(race_before_today)]
 
 srace_no = 1
-erace_no = racedays['n_race'][len(race_before_today) + 1]
+erace_no = racedays['n_race'][len(race_before_today)]
 
 print(next_raceday)
 print(next_race_venue)
