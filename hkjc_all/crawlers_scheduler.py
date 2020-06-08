@@ -2,8 +2,7 @@ from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
 
-from hkjc_all.spiders.deals import DealsSpider
-
+from hkjc_all.spiders.live_winodds import LiveWinOddsSpider
 
 def crawl_job():
     """
@@ -12,7 +11,7 @@ def crawl_job():
     """
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
-    return runner.crawl(DealsSpider)
+    return runner.crawl(LiveWinOddsSpider)
 
 def schedule_next_crawl(null, sleep_time):
     """

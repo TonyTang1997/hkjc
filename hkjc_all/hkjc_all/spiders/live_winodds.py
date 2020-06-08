@@ -36,7 +36,7 @@ erace_no = racedays['n_race'][len(race_before_today)]
 print(next_raceday)
 print(next_race_venue)
 
-class RaceCardSpider(scrapy.Spider):
+class LiveWinOddsSpider(scrapy.Spider):
 
     name = "live_winodds"
     
