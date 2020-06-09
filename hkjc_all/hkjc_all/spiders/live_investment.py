@@ -50,7 +50,7 @@ class LiveInvestmentSpider(scrapy.Spider):
 
     start_urls = []
     for i in range(all_race_no):
-        tmp_url = "http://bet.hkjc.com/racing/getJSON.aspx/?type=pooltot&date={}&venue={}&raceno={}".format(next_raceday,next_race_venue,i+1)
+        tmp_url = "http://bet.hkjc.com/racing/getJSON.aspx/?type=pooltot&date={}&venue={}&raceno={}".format(next_raceday.strftime('%Y-%m-%d'),next_race_venue,i+1)
         start_urls.append(tmp_url)
 
     def __init__(self):
