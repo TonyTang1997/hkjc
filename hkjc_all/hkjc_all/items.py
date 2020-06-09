@@ -123,3 +123,19 @@ class HkjcLiveWinOddsItem(scrapy.Item):
     place_odds_12 = Field()
     place_odds_13 = Field()
     place_odds_14 = Field()
+
+class HkjcLiveInvestmentItem(scrapy.Item):
+
+    time_scaped = Field()
+    time_updated_by_hkjc = Field()
+    race_date = Field()
+    venue = Field()
+    win_investment = Field()
+    pla_investment = Field()
+    qin_investment = Field()
+    qpl_investment = Field()
+    tce_investment = Field()
+    tri_investment = Field()
+    qtt_investment = Field()
+    dbl_investment = Field()
+    total_investment = Field()
