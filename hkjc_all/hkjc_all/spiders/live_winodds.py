@@ -18,6 +18,13 @@ from scrapy import Request
 from requests_html import HTMLSession, AsyncHTMLSession
 import urllib.request, json 
 import random
+import pymongo
+from pymongo import MongoClient
+
+client = MongoClient()
+db = client.hkjc
+collection = db.racecard
+next_racecard = pd.DataFrame(list(collection.find()))
 
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
@@ -31,7 +38,7 @@ next_raceday = racedays['date'][len(race_before_today)]
 next_race_venue = racedays['venue'][len(race_before_today)]
 
 srace_no = 1
-erace_no = racedays['n_race'][len(race_before_today)]
+erace_no = len(next_racecard.race_no.unique())
 
 print(next_raceday)
 print(next_race_venue)
