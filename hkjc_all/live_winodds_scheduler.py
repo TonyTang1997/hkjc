@@ -27,7 +27,7 @@ def crawl():
     # crawl_job() returns a Deferred
     d = crawl_job()
     # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
-    d.addCallback(schedule_next_crawl, 30)
+    d.addCallback(schedule_next_crawl, 290)
     d.addErrback(catch_error)
 
 def catch_error(failure):

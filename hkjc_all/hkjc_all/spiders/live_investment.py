@@ -61,22 +61,22 @@ class LiveInvestmentSpider(scrapy.Spider):
         r = session.get(response.url)
         data = json.loads(r.html.html)
 
-        main["time_scaped"] = datetime.now()
-        main["time_updated_by_hkjc"] = data['updateTime']
+        main["time_scaped"] = (datetime.now() + timedelta(hours=8))
+        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + str(data['updateTime'])
         main["race_date"] = next_raceday
         main["venue"] = next_race_venue
         main['total_investment'] = data['totalInv']
 
         investment_value = [x['value'] for x in data['inv']]
         
-        win_investment = investment_value[0]
-        pla_investment = investment_value[1]
-        qin_investment = investment_value[2]
-        qpl_investment = investment_value[3]
-        tce_investment = investment_value[4]
-        tri_investment = investment_value[5]
-        qtt_investment = investment_value[7]
-        dbl_investment = investment_value[8]
+        main['win_investment'] = investment_value[0]
+        main['pla_investment'] = investment_value[1]
+        main['qin_investment'] = investment_value[2]
+        main['qpl_investment'] = investment_value[3]
+        main['tce_investment'] = investment_value[4]
+        main['tri_investment'] = investment_value[5]
+        main['qtt_investment'] = investment_value[7]
+        main['dbl_investment'] = investment_value[8]
         
         yield main
 

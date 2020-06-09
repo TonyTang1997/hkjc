@@ -32,7 +32,7 @@ racedays = pd.read_csv(racedays_dir)
 racedays = racedays.sort_values("date").reset_index(drop=True)
 
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
-race_before_today = racedays[racedays.date < datetime.now()].reset_index(drop=True)
+race_before_today = racedays[racedays.date < (datetime.now() + timedelta(hours=8))].reset_index(drop=True)
 
 next_raceday = racedays['date'][len(race_before_today)]
 next_race_venue = racedays['venue'][len(race_before_today)]
@@ -70,8 +70,8 @@ class LiveWinOddsSpider(scrapy.Spider):
 
         time, odds = data['OUT'].split('@@@')[0], data['OUT'].split('@@@')[1:]
 
-        main["time_scaped"] = datetime.now()
-        main["time_updated_by_hkjc"] = time
+        main["time_scaped"] = (datetime.now() + timedelta(hours=8))
+        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + str(time)
         main["race_date"] = next_raceday
         main["venue"] = next_race_venue
 
