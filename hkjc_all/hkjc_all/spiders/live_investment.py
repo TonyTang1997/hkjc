@@ -35,7 +35,7 @@ all_race_no = racedays['n_race'][len(race_before_today)]
 print(next_raceday)
 print(next_race_venue)
 
-class LiveWinOddsSpider(scrapy.Spider):
+class LiveInvestmentSpider(scrapy.Spider):
 
     name = "live_investment"
     
