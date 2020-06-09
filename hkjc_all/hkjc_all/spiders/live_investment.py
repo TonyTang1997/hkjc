@@ -18,6 +18,13 @@ from scrapy import Request
 from requests_html import HTMLSession, AsyncHTMLSession
 import urllib.request, json 
 import random
+import pymongo
+from pymongo import MongoClient
+
+client = MongoClient()
+db = client.hkjc
+collection = db.racecard
+next_racecard = pd.DataFrame(list(collection.find()))
 
 home_dir = os.path.expanduser('~')
 racedays_dir = home_dir + "/hkjc/racedays.csv"
@@ -30,7 +37,7 @@ race_before_today = racedays[racedays.date < datetime.now()].reset_index(drop=Tr
 next_raceday = racedays['date'][len(race_before_today)]
 next_race_venue = racedays['venue'][len(race_before_today)]
 
-all_race_no = racedays['n_race'][len(race_before_today)]
+all_race_no = len(next_racecard.race_no.unique())
 
 print(next_raceday)
 print(next_race_venue)
@@ -62,9 +69,10 @@ class LiveInvestmentSpider(scrapy.Spider):
         data = json.loads(r.html.html)
 
         main["time_scaped"] = (datetime.now() + timedelta(hours=8))
-        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + str(data['updateTime'])
+        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + "-" + str(data['updateTime'])
         main["race_date"] = next_raceday
         main["venue"] = next_race_venue
+        main['race_no'] = str(response.url).split('=')[-1]
         main['total_investment'] = data['totalInv']
 
         investment_value = [x['value'] for x in data['inv']]

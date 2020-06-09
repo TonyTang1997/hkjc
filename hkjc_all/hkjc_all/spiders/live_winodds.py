@@ -71,7 +71,7 @@ class LiveWinOddsSpider(scrapy.Spider):
         time, odds = data['OUT'].split('@@@')[0], data['OUT'].split('@@@')[1:]
 
         main["time_scaped"] = (datetime.now() + timedelta(hours=8))
-        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + str(time)
+        main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + "-" + str(time)
         main["race_date"] = next_raceday
         main["venue"] = next_race_venue
 

@@ -130,6 +130,7 @@ class HkjcLiveInvestmentItem(scrapy.Item):
     time_updated_by_hkjc = Field()
     race_date = Field()
     venue = Field()
+    race_no = Field()
     win_investment = Field()
     pla_investment = Field()
     qin_investment = Field()
