@@ -38,10 +38,12 @@ next_raceday = racedays['date'][len(race_before_today)]
 next_race_venue = racedays['venue'][len(race_before_today)]
 
 srace_no = 1
-erace_no = len(next_racecard.race_no.unique())
 
-print(next_raceday)
-print(next_race_venue)
+try:
+    erace_no = len(next_racecard.race_no.unique())
+except:
+    print("racecard not found")
+    pass
 
 class LiveWinOddsSpider(scrapy.Spider):
 
@@ -60,6 +62,10 @@ class LiveWinOddsSpider(scrapy.Spider):
         chrome_options.add_argument("--disable-dev-shm-usage")
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
         
+        print(next_raceday)
+        print(next_race_venue)
+
+
     def parse(self, response):
 
         main = HkjcLiveWinOddsItem()

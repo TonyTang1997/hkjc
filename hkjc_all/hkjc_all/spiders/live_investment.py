@@ -37,10 +37,12 @@ race_before_today = racedays[racedays.date < datetime.now()].reset_index(drop=Tr
 next_raceday = racedays['date'][len(race_before_today)]
 next_race_venue = racedays['venue'][len(race_before_today)]
 
-all_race_no = len(next_racecard.race_no.unique())
 
-print(next_raceday)
-print(next_race_venue)
+try:
+    all_race_no = len(next_racecard.race_no.unique())
+except:
+    print("racecard not found")
+    pass
 
 class LiveInvestmentSpider(scrapy.Spider):
 
@@ -60,6 +62,9 @@ class LiveInvestmentSpider(scrapy.Spider):
         chrome_options.add_argument("--disable-dev-shm-usage")
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
         
+        print(next_raceday)
+        print(next_race_venue)
+
     def parse(self, response):
 
         main = HkjcLiveInvestmentItem()

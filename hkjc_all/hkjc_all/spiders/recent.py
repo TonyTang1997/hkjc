@@ -27,9 +27,6 @@ racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 racedays = racedays[racedays.date == yesterday].reset_index(drop=True)
 racedays['date'] = racedays['date'].dt.strftime('%Y/%m/%d')
 
-print(yesterday)
-print(racedays)
-
 date_to_crawl = racedays['date']
 venue_to_crawl = racedays['venue']
 race_to_crawl = racedays['n_race']
@@ -61,6 +58,9 @@ class hkRaceAllSpider(scrapy.Spider):
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
+
+        print(yesterday)
+        print(racedays)
 
     def parse(self, response):
         
