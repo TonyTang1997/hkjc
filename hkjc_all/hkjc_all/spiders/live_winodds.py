@@ -43,6 +43,7 @@ try:
     erace_no = len(next_racecard.race_no.unique())
 except:
     print("racecard not found")
+    erace_no = 0
     pass
 
 class LiveWinOddsSpider(scrapy.Spider):

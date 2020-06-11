@@ -42,6 +42,7 @@ try:
     all_race_no = len(next_racecard.race_no.unique())
 except:
     print("racecard not found")
+    all_race_no = 0
     pass
 
 class LiveInvestmentSpider(scrapy.Spider):
@@ -61,7 +62,7 @@ class LiveInvestmentSpider(scrapy.Spider):
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
-        
+
         print(next_raceday)
         print(next_race_venue)
 
