@@ -20,7 +20,7 @@ def multi_crawl():
     yield runner.crawl(LiveInvestmentSpider)
     yield runner.crawl(LiveQinSpider)
     yield runner.crawl(LiveQplSpider)
-    reactor.stop()
+    #reactor.stop()
     
 def crawl_job():
     """
