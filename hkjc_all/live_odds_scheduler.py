@@ -29,10 +29,11 @@ def crawl_job():
     """
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
-    yield runner.crawl(LiveWinOddsSpider)
-    yield runner.crawl(LiveInvestmentSpider)
-    yield runner.crawl(LiveQinSpider)
-    yield runner.crawl(LiveQplSpider)
+    runner.crawl(LiveWinOddsSpider)
+    runner.crawl(LiveInvestmentSpider)
+    runner.crawl(LiveQinSpider)
+    runner.crawl(LiveQplSpider)
+    return runner.join()
 
 def schedule_next_crawl(null, sleep_time):
     """
