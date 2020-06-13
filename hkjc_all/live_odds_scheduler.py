@@ -55,6 +55,7 @@ def crawl():
     # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
     d.addCallback(schedule_next_crawl, 290)
     d.addErrback(catch_error)
+    reactor.run()
     export_to_bucket()
 
 def export_to_bucket():
