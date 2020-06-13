@@ -78,7 +78,7 @@ class LiveInvestmentSpider(scrapy.Spider):
         main['total_investment'] = data['totalInv']
 
         investment_value = [x['value'] for x in data['inv']]
-        
+
         main['win_investment'] = investment_value[0]
         main['pla_investment'] = investment_value[1]
         main['qin_investment'] = investment_value[2]

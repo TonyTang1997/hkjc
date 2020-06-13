@@ -9,17 +9,12 @@ from hkjc_all.spiders.live_investment import LiveInvestmentSpider
 from hkjc_all.spiders.live_qin import LiveQinSpider
 from hkjc_all.spiders.live_qpl import LiveQplSpider
 
-@defer.inlineCallbacks
-def crawl():
+def crawl_and_export():
 
-    yield runner.crawl(LiveWinOddsSpider)
-    yield runner.crawl(LiveInvestmentSpider)
-    yield runner.crawl(LiveQinSpider)
-    yield runner.crawl(LiveQplSpider)
-
-    reactor.stop()
-
-def export_to_bucket():
+    os.system('scrapy crawl live_winodds')
+    os.system('scrapy crawl live_investment')
+    os.system('scrapy crawl live_qin')
+    os.system('scrapy crawl live_qpl')
 
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
     os.system('mongoexport --db hkjc --collection live_investment --out live_investment.json')
@@ -31,17 +26,10 @@ def export_to_bucket():
 
 
 if __name__=="__main__":
-    settings = get_project_settings()
-    runner = CrawlerRunner(settings)
-
-    crawl()
-    reactor.run() # the script will block here until the last crawl call is finished
-    export_to_bucket()
-
-    for i in range(5):
-        time.sleep(1)
 
     while True:
-        
-        reactor.callLater(5, crawl)
+
+        crawl_and_export()
+        for i in range(285):
+            time.sleep(1)
 
