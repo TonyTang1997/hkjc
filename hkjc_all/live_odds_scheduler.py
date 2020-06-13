@@ -45,9 +45,12 @@ def crawl():
     # crawl_job() returns a Deferred
     multi_crawl()
     d = crawl_job()
+    
     # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
     d.addCallback(schedule_next_crawl, 290)
     d.addErrback(catch_error)
+
+    export_to_bucket()
 
 def export_to_bucket():
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
@@ -63,5 +66,4 @@ def catch_error(failure):
 
 if __name__=="__main__":
     crawl()
-    export_to_bucket()
     reactor.run()
