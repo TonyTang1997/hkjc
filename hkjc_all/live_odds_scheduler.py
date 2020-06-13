@@ -34,4 +34,5 @@ def crawl_and_export():
 if __name__=="__main__":
     while True:
         crawl_and_export()
-        time.sleep(290)
+        for i in range(5):
+            sleep(1)
