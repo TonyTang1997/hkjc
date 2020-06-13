@@ -58,6 +58,9 @@ def export_to_bucket():
     os.system('gsutil cp *.json gs://tty-hr')
     os.system('rm *.json')
 
+def catch_error(failure):
+    print(failure.value)
+
 if __name__=="__main__":
     crawl()
     export_to_bucket()
