@@ -1,5 +1,5 @@
 import os
-
+import time
 from twisted.internet import reactor, defer
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
@@ -9,56 +9,19 @@ from hkjc_all.spiders.live_investment import LiveInvestmentSpider
 from hkjc_all.spiders.live_qin import LiveQinSpider
 from hkjc_all.spiders.live_qpl import LiveQplSpider
 
-#@defer.inlineCallbacks
-#def multi_crawl():
-#    """
-#    Job to start spiders.
-#    Return Deferred, which will execute after crawl has completed.
-#    """
-#    settings = get_project_settings()
-#    runner = CrawlerRunner(settings)
-#    yield runner.crawl(LiveInvestmentSpider)
-#    yield runner.crawl(LiveQinSpider)
-#    yield runner.crawl(LiveQplSpider)
-#    #reactor.stop()
-    
-def crawl_job():
-    """
-    Job to start spiders.
-    Return Deferred, which will execute after crawl has completed.
-    """
+def crawl_and_export():
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
     runner.crawl(LiveWinOddsSpider)
     runner.crawl(LiveInvestmentSpider)
     runner.crawl(LiveQinSpider)
     runner.crawl(LiveQplSpider)
-    return runner.join()
 
-def schedule_next_crawl(null, sleep_time):
-    """
-    Schedule the next crawl
-    """
-    
-    reactor.callLater(sleep_time, crawl)
-    
+    d = runner.join()
+    d.addBoth(lambda _: reactor.stop())
 
-def crawl():
-    """
-    A "recursive" function that schedules a crawl 30 seconds after
-    each successful crawl.
-    """
-    # crawl_job() returns a Deferred
-    #multi_crawl()
-    d = crawl_job()
+    reactor.run() # the script will block here until all crawling jobs are finished    
 
-    # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
-    d.addCallback(schedule_next_crawl, 290)
-    d.addErrback(catch_error)
-    reactor.run()
-    export_to_bucket()
-
-def export_to_bucket():
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
     os.system('mongoexport --db hkjc --collection live_investment --out live_investment.json')
     os.system('mongoexport --db hkjc --collection live_qin --out live_qin.json')
@@ -67,9 +30,8 @@ def export_to_bucket():
     os.system('gsutil cp *.json gs://tty-hr')
     os.system('rm *.json')
 
-def catch_error(failure):
-    print(failure.value)
 
 if __name__=="__main__":
-    crawl()
-    reactor.run()
+    while True:
+        crawl_and_export()
+        time.sleep(290)
