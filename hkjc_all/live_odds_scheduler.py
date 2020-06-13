@@ -35,6 +35,7 @@ def schedule_next_crawl(null, sleep_time):
     """
     Schedule the next crawl
     """
+    export_to_bucket()
     reactor.callLater(sleep_time, crawl)
 
 def crawl():
@@ -45,12 +46,10 @@ def crawl():
     # crawl_job() returns a Deferred
     multi_crawl()
     d = crawl_job()
-    
+
     # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
     d.addCallback(schedule_next_crawl, 290)
     d.addErrback(catch_error)
-
-    export_to_bucket()
 
 def export_to_bucket():
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
