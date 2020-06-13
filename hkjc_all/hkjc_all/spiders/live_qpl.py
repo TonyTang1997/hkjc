@@ -62,9 +62,6 @@ class LiveQplSpider(scrapy.Spider):
         chrome_options.add_argument("--disable-dev-shm-usage")
         self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
         
-        print(next_raceday)
-        print(next_race_venue)
-
     def parse(self, response):
 
         main = HkjcLiveQplItem()
