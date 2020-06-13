@@ -36,7 +36,7 @@ if __name__=="__main__":
         runner = CrawlerRunner(settings)
 
         crawl()
-        reactor.run() # the script will block here until the last crawl call is finished
+        #reactor.run() # the script will block here until the last crawl call is finished
         export_to_bucket()
 
         for i in range(5):
