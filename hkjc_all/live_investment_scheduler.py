@@ -1,3 +1,4 @@
+import os 
 from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
@@ -35,4 +36,5 @@ def catch_error(failure):
 
 if __name__=="__main__":
     crawl()
+    export_to_bucket()
     reactor.run()

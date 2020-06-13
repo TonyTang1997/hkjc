@@ -1,3 +1,4 @@
+import os
 from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
@@ -12,6 +13,7 @@ def crawl_job():
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
     return runner.crawl(LiveQinSpider)
+    
 
 def schedule_next_crawl(null, sleep_time):
     """
@@ -30,9 +32,15 @@ def crawl():
     d.addCallback(schedule_next_crawl, 290)
     d.addErrback(catch_error)
 
+def export_to_bucket():
+    os.system('mongoexport --db hkjc --collection live_qin --out live_qin.json')
+    os.system('gsutil cp live_qin.json gs://tty-hr')
+    os.system('rm *.json')
+
 def catch_error(failure):
     print(failure.value)
 
 if __name__=="__main__":
     crawl()
+    export_to_bucket()
     reactor.run()

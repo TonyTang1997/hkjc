@@ -14,7 +14,7 @@ def crawl_job():
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
     return runner.crawl(LiveWinOddsSpider)
-
+    
 def schedule_next_crawl(null, sleep_time):
     """
     Schedule the next crawl
@@ -36,7 +36,6 @@ def export_to_bucket():
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
     os.system('gsutil cp live_winodds.json gs://tty-hr')
     os.system('rm *.json')
-
 
 def catch_error(failure):
     print(failure.value)
