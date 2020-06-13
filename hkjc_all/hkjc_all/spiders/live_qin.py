@@ -51,8 +51,9 @@ class LiveQinSpider(scrapy.Spider):
     custom_settings = {'ITEM_PIPELINES': {'hkjc_all.pipelines.MongoDBLiveQin': 400}}
 
     start_urls = [] 
-    tmp_url = "https://bet.hkjc.com/racing/getJSON.aspx/?type=qin&date={}&venue={}&raceno={}".format(next_raceday.strftime('%Y-%m-%d'),next_race_venue,all_race_no)
-    start_urls.append(tmp_url)
+    for i in range(all_race_no):
+        tmp_url = "https://bet.hkjc.com/racing/getJSON.aspx/?type=qin&date={}&venue={}&raceno={}".format(next_raceday.strftime('%Y-%m-%d'),next_race_venue,i+1)
+        start_urls.append(tmp_url)
 
     def __init__(self):
         chrome_options = Options()
@@ -91,6 +92,6 @@ class LiveQinSpider(scrapy.Spider):
             for j in range(combs_dict[len(qin_odds)])[i+1:]:
                 main['qin_'+str(i+1)+'_'+str(j+1)] = qin_odds[counter]
                 counter += 1
-                
+
         yield main
 
