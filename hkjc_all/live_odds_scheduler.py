@@ -1,4 +1,5 @@
 import os
+import time
 
 from twisted.internet import reactor, defer
 from scrapy.crawler import CrawlerRunner
@@ -48,10 +49,12 @@ def crawl():
     d = crawl_job()
 
     # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
-    d.addCallback(schedule_next_crawl, 290)
+    d.addCallback(schedule_next_crawl, 285)
     d.addErrback(catch_error)
 
 def export_to_bucket():
+    time.sleep(5)
+    
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
     os.system('mongoexport --db hkjc --collection live_investment --out live_investment.json')
     os.system('mongoexport --db hkjc --collection live_qin --out live_qin.json')
