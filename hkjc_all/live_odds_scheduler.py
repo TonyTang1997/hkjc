@@ -3,6 +3,7 @@ import time
 from twisted.internet import reactor, defer
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
+from scrapy.crawler import CrawlerProcess
 
 from hkjc_all.spiders.live_winodds import LiveWinOddsSpider
 from hkjc_all.spiders.live_investment import LiveInvestmentSpider
@@ -11,13 +12,20 @@ from hkjc_all.spiders.live_qpl import LiveQplSpider
 
 @defer.inlineCallbacks
 def crawl():
+    process = CrawlerProcess()
+    process.crawl(LiveWinOddsSpider)
+    process.crawl(LiveInvestmentSpider)
+    process.crawl(LiveQinSpider)
+    process.crawl(LiveQplSpider)
 
-    yield runner.crawl(LiveWinOddsSpider)
-    yield runner.crawl(LiveInvestmentSpider)
-    yield runner.crawl(LiveQinSpider)
-    yield runner.crawl(LiveQplSpider)
+    process.start() # the script will block here until all crawling jobs are finished
+    
+    #yield runner.crawl(LiveWinOddsSpider)
+    #yield runner.crawl(LiveInvestmentSpider)
+    #yield runner.crawl(LiveQinSpider)
+    #yield runner.crawl(LiveQplSpider)
 
-    reactor.stop()
+    #reactor.stop()
 
 def export_to_bucket():
 
@@ -36,7 +44,7 @@ if __name__=="__main__":
         runner = CrawlerRunner(settings)
 
         crawl()
-        #reactor.run() # the script will block here until the last crawl call is finished
+        reactor.run() # the script will block here until the last crawl call is finished
         export_to_bucket()
 
         for i in range(5):
