@@ -89,7 +89,7 @@ class LiveQinSpider(scrapy.Spider):
 
         for i in range(combs_dict[len(qin_odds)]):
             for j in range(i+1):
-                main['qin_'+str(i+1)+'_'+str(j+1)] = wo[counter]
+                main['qin_'+str(i+1)+'_'+str(j+1)] = qin_odds[counter]
                 counter += 1
 
         yield main

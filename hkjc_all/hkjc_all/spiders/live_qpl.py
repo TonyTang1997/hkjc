@@ -80,8 +80,8 @@ class LiveQplSpider(scrapy.Spider):
         main["venue"] = next_race_venue
         main['race_no'] = str(response.url).split('=')[-1]
 
-        qin_odds_list = odds[0].split(';')[1:]
-        qin_odds = list(map(lambda x: x.split('=')[1], qin_odds_list))
+        qpl_odds_list = odds[0].split(';')[1:]
+        qpl_odds = list(map(lambda x: x.split('=')[1], qin_odds_list))
 
         combs_dict = {91:14,78:13,66:12,55:11,45:10,36:9,28:8,21:7,15:6,10:5,6:4,3:3}
 
@@ -89,7 +89,7 @@ class LiveQplSpider(scrapy.Spider):
 
         for i in range(combs_dict[len(qin_odds)]):
             for j in range(i+1):
-                main['qpl_'+str(i+1)+'_'+str(j+1)] = wo[counter]
+                main['qpl_'+str(i+1)+'_'+str(j+1)] = qpl_odds[counter]
                 counter += 1
 
         yield main
