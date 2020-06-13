@@ -26,6 +26,7 @@ class MongoDBHKRacePipeline(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling hkrace---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
@@ -52,6 +53,7 @@ class MongoDBRaceCardPipeline(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling racecard---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
@@ -78,6 +80,7 @@ class MongoDBLiveWinOddsPipeline(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling live winodds---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
@@ -104,6 +107,7 @@ class MongoDBLiveInvestment(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling live_investment---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
@@ -130,6 +134,7 @@ class MongoDBLiveQin(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling live_qin---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
@@ -156,6 +161,7 @@ class MongoDBLiveQpl(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("---finished crawling live_qpl---")
 
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
