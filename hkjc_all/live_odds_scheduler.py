@@ -10,20 +10,44 @@ from hkjc_all.spiders.live_qin import LiveQinSpider
 from hkjc_all.spiders.live_qpl import LiveQplSpider
 
 @defer.inlineCallbacks
-def crawl():
+def multi_crawl():
     """
     Job to start spiders.
     Return Deferred, which will execute after crawl has completed.
     """
     settings = get_project_settings()
     runner = CrawlerRunner(settings)
-    yield runner.crawl(LiveWinOddsSpider)
     yield runner.crawl(LiveInvestmentSpider)
     yield runner.crawl(LiveQinSpider)
     yield runner.crawl(LiveQplSpider)
     reactor.stop()
-    reactor.callLater(290, crawl)
     
+def crawl_job():
+    """
+    Job to start spiders.
+    Return Deferred, which will execute after crawl has completed.
+    """
+    settings = get_project_settings()
+    runner = CrawlerRunner(settings)
+    return runner.crawl(LiveWinOddsSpider)
+    
+def schedule_next_crawl(null, sleep_time):
+    """
+    Schedule the next crawl
+    """
+    reactor.callLater(sleep_time, crawl)
+
+def crawl():
+    """
+    A "recursive" function that schedules a crawl 30 seconds after
+    each successful crawl.
+    """
+    # crawl_job() returns a Deferred
+    multi_crawl()
+    d = crawl_job()
+    # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
+    d.addCallback(schedule_next_crawl, 290)
+    d.addErrback(catch_error)
 
 def export_to_bucket():
     os.system('mongoexport --db hkjc --collection live_winodds --out live_winodds.json')
