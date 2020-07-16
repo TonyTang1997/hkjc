@@ -24,8 +24,13 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date < (datetime.now() + timedelta(hours=8))].reset_index(drop=True)
 
-next_raceday = racedays['date'][len(race_before_today)]
-next_race_venue = racedays['venue'][len(race_before_today)]
+try:
+    next_raceday = racedays['date'][len(race_before_today)]
+    next_race_venue = racedays['venue'][len(race_before_today)]
+
+except:
+    print("next race not found")
+    pass
 
 class RaceCardSpider(scrapy.Spider):
 

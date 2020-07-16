@@ -11,6 +11,7 @@ import sys
 import selenium
 from selenium import webdriver
 import pandas as pd
+import numpy as np
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime, timedelta
 from hkjc_all.items import HkjcLiveInvestmentItem
@@ -34,15 +35,21 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date <= (datetime.now() + timedelta(hours=8) - timedelta(days=1))].reset_index(drop=True)
 
-next_raceday = racedays['date'][len(race_before_today)]
-next_race_venue = racedays['venue'][len(race_before_today)]
-
 try:
-    all_race_no = len(next_racecard.race_no.unique())
+    next_raceday = racedays['date'][len(race_before_today)]
+    next_race_venue = racedays['venue'][len(race_before_today)]
+    
+    try:
+        all_race_no = len(next_racecard.race_no.unique())
+    except:
+        print("racecard not found")
+        all_race_no = 0
+        pass
+
 except:
-    print("racecard not found")
-    all_race_no = 0
+    print("next race not found")
     pass
+
 
 class LiveInvestmentSpider(scrapy.Spider):
 
@@ -70,23 +77,34 @@ class LiveInvestmentSpider(scrapy.Spider):
         r = session.get(response.url)
         data = json.loads(r.html.html)
 
-        main["time_scaped"] = (datetime.now() + timedelta(hours=8))
+        main["time_scraped"] = (datetime.now() + timedelta(hours=8))
         main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + "-" + str(data['updateTime'])
-        main["race_date"] = next_raceday
+        main["race_date"] = next_raceday.strftime('%Y-%m-%d')
         main["venue"] = next_race_venue
         main['race_no'] = str(response.url).split('=')[-1]
         main['total_investment'] = data['totalInv']
 
-        investment_value = [x['value'] for x in data['inv']]
+        investment_value_dict = {x['pool'] : x['value'] for x in data['inv']}
 
-        main['win_investment'] = investment_value[0]
-        main['pla_investment'] = investment_value[1]
-        main['qin_investment'] = investment_value[2]
-        main['qpl_investment'] = investment_value[3]
-        main['tce_investment'] = investment_value[4]
-        main['tri_investment'] = investment_value[5]
-        main['qtt_investment'] = investment_value[7]
-        main['dbl_investment'] = investment_value[8]
+        main['win_investment'] = investment_value_dict['WIN']
+        main['win_investment'] = np.nan
+        main['pla_investment'] = investment_value_dict['PLA']
+        main['qin_investment'] = investment_value_dict['QIN']
+        
+        try:
+            main['qpl_investment'] = investment_value_dict['QPL']
+        except:
+            main['qpl_investment'] = np.nan
+
+        main['tce_investment'] = investment_value_dict['TCE']
+        main['tri_investment'] = investment_value_dict['TRI']
+
+        try:
+            main['qtt_investment'] = investment_value_dict['QTT']
+        except:
+            main['qtt_investment'] = np.nan
+        
+        main['dbl_investment'] = investment_value_dict['DBL']
         
         yield main
 

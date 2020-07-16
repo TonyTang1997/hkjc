@@ -34,17 +34,23 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date <= (datetime.now() + timedelta(hours=8) - timedelta(days=1))].reset_index(drop=True)
 
-next_raceday = racedays['date'][len(race_before_today)]
-next_race_venue = racedays['venue'][len(race_before_today)]
-
 srace_no = 1
 
 try:
-    erace_no = len(next_racecard.race_no.unique())
+    next_raceday = racedays['date'][len(race_before_today)]
+    next_race_venue = racedays['venue'][len(race_before_today)]
+    
+    try:
+        erace_no = len(next_racecard.race_no.unique())
+    except:
+        print("racecard not found")
+        all_race_no = 0
+        pass
+
 except:
-    print("racecard not found")
-    erace_no = 0
+    print("next race not found")
     pass
+
 
 class LiveWinOddsSpider(scrapy.Spider):
 
@@ -66,20 +72,19 @@ class LiveWinOddsSpider(scrapy.Spider):
         print(next_raceday)
         print(next_race_venue)
 
-
     def parse(self, response):
 
         main = HkjcLiveWinOddsItem()
-
+                    
         session = HTMLSession()
         r = session.get(response.url)
         data = json.loads(r.html.html)
 
         time, odds = data['OUT'].split('@@@')[0], data['OUT'].split('@@@')[1:]
 
-        main["time_scaped"] = (datetime.now() + timedelta(hours=8))
+        main["time_scraped"] = (datetime.now() + timedelta(hours=8))
         main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + "-" + str(time)
-        main["race_date"] = next_raceday
+        main["race_date"] = next_raceday.strftime('%Y-%m-%d')
         main["venue"] = next_race_venue
 
         for i, odd in enumerate(odds):
@@ -89,7 +94,7 @@ class LiveWinOddsSpider(scrapy.Spider):
             wo = list(map(lambda x: x.split('=')[1], wo.split(';')))
             po = list(map(lambda x: x.split('=')[1], po.split(';')))
 
-            main['race_no'] = i
+            final['race_no'] = i + 1
 
             for j in range(len(wo)):
                 final['win_odds_'+str(j+1)] = wo[j]

@@ -34,14 +34,19 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date <= (datetime.now() + timedelta(hours=8) - timedelta(days=1))].reset_index(drop=True)
 
-next_raceday = racedays['date'][len(race_before_today)]
-next_race_venue = racedays['venue'][len(race_before_today)]
-
 try:
-    all_race_no = len(next_racecard.race_no.unique())
+    next_raceday = racedays['date'][len(race_before_today)]
+    next_race_venue = racedays['venue'][len(race_before_today)]
+    
+    try:
+        all_race_no = len(next_racecard.race_no.unique())
+    except:
+        print("racecard not found")
+        all_race_no = 0
+        pass
+
 except:
-    print("racecard not found")
-    all_race_no = 0
+    print("next race not found")
     pass
 
 class LiveQinSpider(scrapy.Spider):
@@ -72,9 +77,9 @@ class LiveQinSpider(scrapy.Spider):
 
         time, odds = data['OUT'].split('@@@')[0], data['OUT'].split('@@@')[1:]
 
-        main["time_scaped"] = (datetime.now() + timedelta(hours=8))
+        main["time_scraped"] = (datetime.now() + timedelta(hours=8))
         main["time_updated_by_hkjc"] = str((datetime.now() + timedelta(hours=8)).strftime('%Y-%m-%d')) + "-" + str(time)
-        main["race_date"] = next_raceday
+        main["race_date"] = next_raceday.strftime('%Y-%m-%d')
         main["venue"] = next_race_venue
         main['race_no'] = str(response.url).split('=')[-1]
 
@@ -87,7 +92,7 @@ class LiveQinSpider(scrapy.Spider):
 
         for i in range(combs_dict[len(qin_odds)]):
             for j in range(combs_dict[len(qin_odds)])[i+1:]:
-                main['qin_'+str(i+1)+'_'+str(j+1)] = qin_odds[counter]
+                main['qin_odds_'+str(i+1)+'_'+str(j+1)] = qin_odds[counter]
                 counter += 1
 
         yield main

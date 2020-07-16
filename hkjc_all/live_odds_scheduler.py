@@ -28,7 +28,6 @@ def crawl_and_export():
 if __name__=="__main__":
 
     while True:
-
         crawl_and_export()
         for i in range(285):
             time.sleep(1)
