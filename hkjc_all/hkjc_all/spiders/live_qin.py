@@ -48,8 +48,8 @@ try:
 
 except:
     print("next race not found")
-    pass
-
+    exit()
+    
 class LiveQinSpider(scrapy.Spider):
 
     name = "live_qin"

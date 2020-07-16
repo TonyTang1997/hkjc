@@ -48,7 +48,7 @@ try:
 
 except:
     print("next race not found")
-    pass
+    exit()
 
 class LiveQplSpider(scrapy.Spider):
 

@@ -49,7 +49,7 @@ try:
 
 except:
     print("next race not found")
-    return
+    exit()
 
 
 class LiveInvestmentSpider(scrapy.Spider):
