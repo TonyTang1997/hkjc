@@ -50,7 +50,7 @@ try:
 
 except:
     print("next race not found")
-    pass
+    return
 
 
 class LiveWinOddsSpider(scrapy.Spider):
