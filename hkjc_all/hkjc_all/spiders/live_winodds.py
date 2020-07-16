@@ -38,6 +38,10 @@ srace_no = 1
 
 erace_no = 0
 
+next_raceday = 0
+next_race_venue = 0
+
+
 try:
     next_raceday = racedays['date'][len(race_before_today)]
     next_race_venue = racedays['venue'][len(race_before_today)]
@@ -50,7 +54,6 @@ try:
 
 except:
     print("next race not found")
-    exit()
 
 
 class LiveWinOddsSpider(scrapy.Spider):
