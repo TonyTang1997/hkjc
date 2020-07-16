@@ -36,8 +36,8 @@ race_before_today = racedays[racedays.date <= (datetime.now() + timedelta(hours=
 
 all_race_no = 0
 
-next_raceday = 0
-next_race_venue = 0
+next_raceday = racedays['date'][0]
+next_race_venue = racedays['venue'][0]
 
 try:
     next_raceday = racedays['date'][len(race_before_today)]

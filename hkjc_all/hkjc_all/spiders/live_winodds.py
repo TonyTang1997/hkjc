@@ -38,9 +38,8 @@ srace_no = 1
 
 erace_no = 0
 
-next_raceday = 0
-next_race_venue = 0
-
+next_raceday = racedays['date'][0]
+next_race_venue = racedays['venue'][0]
 
 try:
     next_raceday = racedays['date'][len(race_before_today)]
