@@ -35,6 +35,8 @@ racedays = racedays.sort_values("date").reset_index(drop=True)
 racedays['date'] = pd.to_datetime(racedays['date'], format='%Y/%m/%d')
 race_before_today = racedays[racedays.date <= (datetime.now() + timedelta(hours=8) - timedelta(days=1))].reset_index(drop=True)
 
+all_race_no = 0
+
 try:
     next_raceday = racedays['date'][len(race_before_today)]
     next_race_venue = racedays['venue'][len(race_before_today)]
@@ -43,7 +45,6 @@ try:
         all_race_no = len(next_racecard.race_no.unique())
     except:
         print("racecard not found")
-        all_race_no = 0
         pass
 
 except:
