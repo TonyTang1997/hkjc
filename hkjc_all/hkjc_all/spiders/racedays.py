@@ -27,7 +27,7 @@ class RaceDaySpider(scrapy.Spider):\
     }
     
     start_urls = [] 
-    for i in range(1979,int(datetime.now().year) + 1):
+    for i in range(1979,int(datetime.now().year) + 2):
         for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
             tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx/?CalYear={}&CalMonth={}".format(i,j) #"/" before aspx is important to escape challenge
             start_urls.append(tmp_urls)
