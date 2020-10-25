@@ -14,6 +14,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from hkjc_all.items import HkjcRaceDayItem
 import re
+from datetime import datetime
 
 class RaceDaySpider(scrapy.Spider):\
 
@@ -26,7 +27,7 @@ class RaceDaySpider(scrapy.Spider):\
     }
     
     start_urls = [] 
-    for i in range(1979,2021):
+    for i in range(1979,str(currentYear = datetime.now().year)):
         for j in ['01','02','03','04','05','06','07','09','10','11','12']:  #never have races in Aug
             tmp_urls = "https://racing.hkjc.com/racing/information/English/Racing/Fixture.aspx/?CalYear={}&CalMonth={}".format(i,j) #"/" before aspx is important to escape challenge
             start_urls.append(tmp_urls)

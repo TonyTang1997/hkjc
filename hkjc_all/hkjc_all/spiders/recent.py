@@ -12,6 +12,7 @@ import selenium
 from selenium import webdriver
 import pandas as pd
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime, timedelta
 from hkjc_all.items import HkjcAllItem
 from scrapy import Request
@@ -57,7 +58,7 @@ class hkRaceAllSpider(scrapy.Spider):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        self.browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=chrome_options)
+        self.browser = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options) #
 
         print(yesterday)
         print(racedays)
