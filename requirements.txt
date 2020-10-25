@@ -4,3 +4,4 @@ selenium==3.141.0
 pandas
 pymongo
 requests_html
+webdriver_manager

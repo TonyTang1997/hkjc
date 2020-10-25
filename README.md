@@ -1,3 +1,5 @@
+# bash install command
+
 ```
 sudo apt-get update
 
@@ -27,3 +29,31 @@ git clone https://github.com/TonyTang1997/hkjc
 cd hkjc 
 sudo pip3 install -r requirements.txt
 ```
+
+# mongodb command 
+
+## in mongo
+
+```
+mongo
+
+use hkjc
+
+db.createCollection("")
+```
+
+## in bash
+
+```
+mongoexport --db hkjc --collection live_winodds --out live_winodds.json
+```
+
+# scrapy command
+
+```
+python3 -m scrapy crawl PROJECT 
+
+python3 -m scrapy crawl PROJECT -o 
+
+```
+
