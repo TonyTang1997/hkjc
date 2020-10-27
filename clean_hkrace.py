@@ -63,7 +63,9 @@ df['win_odds'] = pd.to_numeric(df['win_odds'], errors='coerce')
 df = df.sort_values(['race_date','race_no','horse_number'],ascending=[True,True,True])
 
 df = df[df.win_odds.notnull()]
-df = df[df.win_odds != 0]
+#df = df[df.win_odds != 0]
+
+df = df[df.global_race_id != "1979-12-15 1"]
 
 df = df.reset_index(drop=True)
 
