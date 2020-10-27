@@ -1,12 +1,24 @@
 import pandas as pd
 
+from pymongo import MongoClient
+client = MongoClient('localhost', 27017)
+
 def get_season(x):
     if x.month < 9:
         return (x.year - 1)
     else:
         return x.year
 
-df = pd.read_json('hkrace.json', lines=True)
+db = client.hkjc
+hkrace = db.hkrace
+df = pd.DataFrame(list(hkrace.find()))
+
+columns = ['race_date', 'venue', 'race_code', 'race_no', 'season',
+       'track', 'config', 'condition', 'race_class', 'distance', 'result',
+       'horse_number', 'horse_name', 'horse_id', 'jockey', 'trainer',
+       'actual_weight', 'declared_weight', 'draw', 'LBW', 'finish_time',
+       'win_odds','running_pos_1', 'running_pos_2',
+       'running_pos_3', 'running_pos_4', 'running_pos_5', 'running_pos_6']
 
 df['race_date'] = pd.to_datetime(df['race_date'], format='%d/%m/%Y')
 df = df.sort_values(['race_date','race_no']).reset_index(drop=True)
@@ -48,6 +60,11 @@ df['win_odds'] = pd.to_numeric(df['win_odds'], errors='coerce')
 
 df = df.sort_values(['race_date','race_no','horse_number'],ascending=[True,True,True])
 
+df = df[columns]
+
+df = df[df.win_odds.notnull()]
+df = df[df.win_odds != 0]
+
 df = df.reset_index(drop=True)
 
-df.to_pickle('hkrace_cleaned.pkl')
+df.to_csv('../tony/hkjc_model/hkrace_cleaned.csv', index = False)
