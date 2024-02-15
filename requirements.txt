@@ -1,5 +1,5 @@
 bs4==0.0.1
-Scrapy==2.6.2
+Scrapy==2.11.1
 selenium==3.141.0
 pandas
 pymongo
